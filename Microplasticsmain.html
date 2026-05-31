@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MICROPLASTICS — Hidden Threat to Our Environment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;}
+html{scroll-behavior:smooth;}
+input,textarea,select{cursor:text;user-select:text;-webkit-user-select:text;}
+:root{
+  --a:#00c8ff;--adim:#005d75;--aglow:rgba(0,200,255,0.13);
+  --dark:#03090f;--card:#081525;--border:rgba(0,200,255,0.16);
+  --border2:rgba(0,200,255,0.38);--text:#b8d8e8;--muted:#4a7a9b;
+  --warn:#ff9f00;--danger:#ff4060;--ok:#00e5a0;--bg2:#050e1a;
+  --gold:#ffd700;--purple:#b44dff;
+}
+body{background:var(--dark);color:#d0eaf8;font-family:'Outfit',sans-serif;min-height:100vh;cursor:default;transition:background .3s,color .3s;}
+body.light{--dark:#f0f7ff;--card:#dceefa;--border:rgba(0,120,160,0.22);--border2:rgba(0,120,160,0.5);--text:#1a3a52;--muted:#5b8aa0;--bg2:#e0f0fa;--aglow:rgba(0,150,200,0.1);color:#0d2a3f;background:#f0f7ff;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.disp{font-family:'Bebas Neue',sans-serif;letter-spacing:.03em;}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--a);letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--border);padding:4px 12px;border-radius:2px;display:inline-block;margin-bottom:14px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:24px;transition:border-color .25s,box-shadow .25s;}
+.card:hover{border-color:var(--border2);}
+.card-glow:hover{box-shadow:0 0 28px var(--aglow);}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:10px 22px;border-radius:2px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:all .18s;border:none;display:inline-flex;align-items:center;gap:6px;user-select:none;}
+.btn-a{background:var(--a);color:#03090f;}.btn-a:hover{opacity:.85;transform:translateY(-1px);}
+.btn-o{background:transparent;color:var(--a);border:1px solid var(--a);}.btn-o:hover{background:var(--aglow);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}.btn-ghost:hover{border-color:var(--a);color:var(--a);}
+.btn-gold{background:linear-gradient(135deg,#ffd700,#ffb300);color:#1a0f00;font-weight:700;}.btn-gold:hover{opacity:.9;transform:translateY(-1px);}
+.btn-danger{background:var(--danger);color:#fff;}.btn-danger:hover{opacity:.85;}
+input,select,textarea{background:rgba(255,255,255,.04);border:1px solid var(--border);color:#d0eaf8;font-family:'Outfit',sans-serif;font-size:14px;padding:10px 14px;border-radius:2px;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none;}
+body.light input,body.light select,body.light textarea{background:rgba(0,0,0,.04);color:#0d2a3f;}
+input:focus,select:focus,textarea:focus{border-color:var(--a);}
+select option{background:#081525;}
+body.light select option{background:#dceefa;}
+label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes questPop{0%{transform:scale(.95);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes rewardBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.anim{animation:fadeUp .4s ease both;}
+nav{position:sticky;top:0;z-index:500;background:rgba(3,9,15,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;transition:background .3s;}
+body.light nav{background:rgba(240,247,255,.94);}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0;}
+.nav-links{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.nav-link{font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;color:var(--muted);letter-spacing:.04em;transition:color .2s;text-decoration:none;}
+.nav-link:hover{color:var(--a);}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--a);animation:pulse 2s infinite;flex-shrink:0;}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.stat-card{text-align:center;padding:20px 12px;}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--a);line-height:1;}
+.stat-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:.1em;}
+footer{border-top:1px solid var(--border);padding:40px 24px;margin-top:80px;}
+.hero-bg{position:fixed;inset:0;opacity:.025;background-image:linear-gradient(var(--a) 1px,transparent 1px),linear-gradient(90deg,var(--a) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.hero-glow{position:fixed;top:0;left:0;right:0;height:50vh;background:radial-gradient(ellipse at 20% 0%,rgba(0,200,255,.09) 0%,transparent 60%);pointer-events:none;z-index:0;}
+section{position:relative;z-index:1;padding:80px 0;}
+section.alt{background:var(--bg2);}
+.tab-row{display:flex;gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:20px;}
+.tab-btn{flex:1;padding:10px;background:transparent;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.tab-btn.active{background:var(--aglow);color:var(--a);}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.chip{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;transition:all .18s;}
+.chip.active{border-color:var(--a);background:var(--aglow);color:var(--a);}
+.fg{margin-bottom:14px;}
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:12px 20px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:12px;z-index:9999;display:none;white-space:nowrap;animation:fadeUp .3s ease;}
+.quiz-opt{padding:12px 16px;border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:14px;transition:all .25s;margin-bottom:8px;}
+.quiz-opt:hover{border-color:var(--border2);}
+.quiz-opt.correct{border-color:var(--ok);background:rgba(0,229,160,.1);color:var(--ok);}
+.quiz-opt.wrong{border-color:var(--danger);background:rgba(255,64,96,.1);color:var(--danger);}
+.range-slider{-webkit-appearance:none;appearance:none;height:4px;background:var(--border);border-radius:2px;outline:none;padding:0;border:none;width:100%;}
+.range-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--a);cursor:pointer;border:2px solid var(--dark);}
+.range-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--a);cursor:pointer;border:2px solid var(--dark);}
+.range-val{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--a);min-width:40px;text-align:right;}
+.progress-bar{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:6px;}
+.progress-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+.source-card{cursor:pointer;transition:all .25s;}
+.source-card:hover,.source-card.active{border-color:var(--a);background:var(--aglow);}
+.lifecycle-step{cursor:pointer;text-align:center;padding:16px 10px;transition:all .25s;}
+.lifecycle-step:hover,.lifecycle-step.active{border-color:var(--a);}
+.lifecycle-step .step-icon{font-size:32px;margin-bottom:8px;display:block;transition:transform .25s;}
+.lifecycle-step:hover .step-icon{transform:scale(1.2);}
+.lifecycle-arrow{font-size:24px;color:var(--muted);display:flex;align-items:center;padding-top:8px;}
+.before-after-bar{height:28px;border-radius:4px;overflow:hidden;display:flex;margin-bottom:6px;}
+.bar-before{background:linear-gradient(90deg,var(--danger),#ff6b00);transition:width .8s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:11px;font-family:'IBM Plex Mono',monospace;color:#fff;white-space:nowrap;}
+.bar-after{background:linear-gradient(90deg,var(--adim),var(--a));transition:width .8s ease;display:flex;align-items:center;padding-left:6px;font-size:11px;font-family:'IBM Plex Mono',monospace;color:#03090f;white-space:nowrap;}
+.fact-pill{display:flex;align-items:center;gap:12px;padding:16px 20px;border:1px solid var(--border);border-radius:8px;background:var(--card);transition:all .25s;}
+.fact-pill:hover{border-color:var(--a);transform:translateX(4px);}
+.fact-icon{font-size:28px;flex-shrink:0;}
+#particle-canvas{position:absolute;inset:0;pointer-events:none;opacity:.4;}
+.map-region{cursor:pointer;transition:opacity .2s;}
+.map-region:hover{opacity:.7;}
+.donut-svg{overflow:visible;}
+#dark-toggle,#music-toggle{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);transition:all .2s;}
+#dark-toggle:hover,#music-toggle:hover{border-color:var(--a);color:var(--a);}
+/* AUTH MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:36px;width:100%;max-width:420px;animation:fadeUp .3s ease;}
+/* QUEST CARDS */
+.quest-card{border:1px solid var(--border);border-radius:6px;padding:16px;background:var(--card);animation:questPop .3s ease;transition:all .25s;}
+.quest-card:hover{border-color:var(--border2);}
+.quest-card.completed{border-color:var(--ok);background:rgba(0,229,160,.06);}
+.quest-card.claimed{border-color:var(--muted);opacity:.6;}
+.quest-progress{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin:8px 0;}
+.quest-progress-fill{height:100%;border-radius:3px;transition:width .8s ease;}
+/* REWARD BADGE */
+.reward-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;}
+.badge-gold{background:rgba(255,215,0,.15);border:1px solid var(--gold);color:var(--gold);}
+.badge-silver{background:rgba(192,192,192,.15);border:1px solid #c0c0c0;color:#c0c0c0;}
+.badge-bronze{background:rgba(205,127,50,.15);border:1px solid #cd7f32;color:#cd7f32;}
+/* DID YOU KNOW */
+.fact-rotator{border:1px solid var(--a);border-radius:8px;padding:20px 24px;background:var(--aglow);position:relative;overflow:hidden;}
+.fact-rotator::before{content:'💡';position:absolute;right:16px;top:12px;font-size:32px;opacity:.3;}
+/* INTERACTIVE MAP */
+#pollution-map{height:420px;border-radius:6px;border:1px solid var(--border);}
+.leaflet-popup-content-wrapper{background:var(--card)!important;border:1px solid var(--border2)!important;color:#d0eaf8!important;border-radius:4px!important;}
+.leaflet-popup-tip{background:var(--card)!important;}
+/* CHART TOOLTIP */
+.chart-tooltip{position:absolute;background:var(--card);border:1px solid var(--border2);border-radius:4px;padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;pointer-events:none;z-index:100;display:none;white-space:nowrap;}
+/* XP BAR */
+.xp-bar-outer{height:12px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;}
+.xp-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--a),var(--purple));transition:width 1s ease;animation:shimmer 2s linear infinite;background-size:200% auto;}
+/* LEVEL BADGE */
+.level-ring{width:64px;height:64px;border-radius:50%;border:3px solid var(--a);display:flex;align-items:center;justify-content:center;flex-direction:column;background:var(--aglow);flex-shrink:0;}
+/* MODAL TABS */
+.auth-tab{flex:1;padding:10px;background:transparent;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
+.auth-tab.active{color:var(--a);border-bottom-color:var(--a);}
+/* DATA SECTION PANELS */
+.data-panel{display:none;}.data-panel.active{display:block;animation:fadeUp .3s ease;}
+/* Hover bar highlight */
+.bar-col{transition:opacity .2s;cursor:pointer;}
+.bar-col:hover{opacity:.75;}
+/* leaflet fix */
+.leaflet-container{font-family:'Outfit',sans-serif!important;}
+@media(max-width:700px){
+  .grid2,.grid3,.grid4{grid-template-columns:1fr;}
+  .nav-links{gap:6px;}
+  h1.hero-h1{font-size:64px !important;}
+  .lifecycle-arrow{display:none;}
+  #pollution-map{height:280px;}
+}
+button,[onclick]{cursor:pointer;}
+/* PROFILE / INSPECT MODAL */
+.pmod{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:28px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;animation:fadeUp .3s ease;}
+.mx{position:absolute;top:14px;right:14px;background:transparent;border:1px solid var(--border);border-radius:50%;width:30px;height:30px;cursor:pointer;color:var(--muted);font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;}
+.mx:hover{border-color:var(--danger);color:var(--danger);}
+.ava96{width:96px;height:96px;border-radius:50%;border:3px solid var(--a);display:flex;align-items:center;justify-content:center;font-size:44px;background:var(--aglow);flex-shrink:0;overflow:hidden;}
+.ava-wrap{position:relative;cursor:pointer;}
+.ava-ov{position:absolute;bottom:0;right:0;background:var(--a);color:#03090f;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;}
+.ava-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.istat{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;text-align:center;}
+.istat-v{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--a);}
+.istat-l{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.08em;}
+/* ADMIN PANEL */
+.atab{flex:1;padding:10px 6px;background:transparent;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;cursor:pointer;transition:all .2s;}
+.atab.on{background:var(--aglow);color:var(--a);}
+.adm-tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.adm-tbl th{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.08em;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);}
+.adm-tbl td{padding:10px;border-bottom:1px solid rgba(0,200,255,.06);vertical-align:middle;}
+.btn-rm{background:transparent;border:1px solid var(--danger);color:var(--danger);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 10px;border-radius:2px;cursor:pointer;transition:all .18s;}
+.btn-rm:hover{background:rgba(255,64,96,.15);}
+/* LEADERBOARD */
+.podium-wrap{display:flex;justify-content:center;align-items:flex-end;gap:16px;margin-bottom:32px;flex-wrap:wrap;}
+.podium-slot{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.podium-ava{border-radius:50%;border:3px solid var(--a);display:flex;align-items:center;justify-content:center;background:var(--aglow);overflow:hidden;cursor:pointer;transition:transform .2s;}
+.podium-ava:hover{transform:scale(1.05);}
+.podium-name{font-weight:600;font-size:13px;text-align:center;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.podium-xp{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--a);}
+.podium-block{width:80px;border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:28px;}
+.lb-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;cursor:pointer;transition:all .2s;background:var(--card);}
+.lb-row:hover{border-color:var(--border2);}
+.lb-rank{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--muted);width:32px;text-align:center;flex-shrink:0;}
+.lb-ava{width:40px;height:40px;border-radius:50%;background:var(--aglow);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.lb-info{flex:1;min-width:0;}
+.lb-uname{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lb-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
+.lb-xpv{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--a);flex-shrink:0;}
+/* ITEM CALCULATOR */
+.ic-card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px;cursor:pointer;transition:all .25s;}
+.ic-card:hover,.ic-card.sel{border-color:var(--a);background:var(--aglow);}
+</style>
+</head>
+<body>
+
+<div class="hero-bg"></div>
+<div class="hero-glow"></div>
+<div id="toast"></div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal-box">
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px;">
+      <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+    </div>
+    <div id="auth-signin">
+      <div class="fg"><label>Email</label><input type="email" id="si-email" placeholder="you@example.com"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="si-pass" placeholder="••••••••"/></div>
+      <button class="btn btn-a" style="width:100%;justify-content:center;margin-top:8px" onclick="window.location.href='index.html'">Sign In →</button>
+    </div>
+    <div id="auth-signup" style="display:none">
+      <div class="fg"><label>Display Name</label><input type="text" id="su-name" placeholder="Your name"/></div>
+      <div class="fg"><label>Email</label><input type="email" id="su-email" placeholder="you@example.com"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="su-pass" placeholder="Min 6 characters"/></div>
+      <button class="btn btn-a" style="width:100%;justify-content:center;margin-top:8px" onclick="window.location.href='index.html'">Create Account →</button>
+    </div>
+    <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:12px" onclick="closeAuth()">Cancel</button>
+  </div>
+</div>
+
+<!-- CLAIM MODAL -->
+<div class="modal-overlay" id="claim-modal">
+  <div class="modal-box" style="text-align:center;max-width:380px">
+    <div style="font-size:56px;margin-bottom:12px" id="claim-icon">🎁</div>
+    <div class="disp" style="font-size:32px;color:var(--gold)" id="claim-title">Reward Claimed!</div>
+    <div style="font-size:14px;color:var(--muted);margin:12px 0 24px;line-height:1.7" id="claim-desc"></div>
+    <div style="background:rgba(255,215,0,.12);border:1px dashed var(--gold);border-radius:6px;padding:16px;font-family:'IBM Plex Mono',monospace;font-size:18px;color:var(--gold);letter-spacing:.2em;margin-bottom:20px" id="claim-code"></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:20px">Screenshot or note this code — it expires in 48h</div>
+    <button class="btn btn-a" onclick="document.getElementById('claim-modal').classList.remove('open')">Got it! ✓</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="scrollTo(0,0)">
+      <div class="pulse-dot"></div>
+      <span class="disp" style="font-size:22px;color:var(--a)">MICRO</span>
+      <span class="mono" style="font-size:10px;color:var(--muted)">PLASTICS.io</span>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="#what">What?</a>
+      <a class="nav-link" href="#lifecycle">Lifecycle</a>
+      <a class="nav-link" href="#data">Data</a>
+      <a class="nav-link" href="#map-section">Map</a>
+      <a class="nav-link" href="#calculator">Calc</a>
+      <a class="nav-link" href="#rewards">Rewards</a>
+      <a class="nav-link" href="#quiz">Quiz</a>
+      <a class="nav-link" href="#tips">Tips</a>
+      <a class="nav-link" href="#facts">Facts</a>
+      <a class="nav-link" href="#leaderboard">🏆 Ranks</a>
+      <a class="nav-link" href="#item-calc">🧪 Items</a>
+      <a class="nav-link" href="#reviews">💬 Reviews</a>
+      <button class="btn btn-ghost" style="padding:4px 10px;font-size:10px;" onclick="openM('admin-login-modal')">⚙ Admin</button>
+      <button id="music-toggle" onclick="toggleMusic()">🔇 Music</button>
+      <button id="dark-toggle" onclick="toggleDark()">☀ Light</button>
+      <button class="btn btn-o" style="padding:6px 14px;font-size:11px" id="auth-btn" onclick="window.location.href='index.html'">Sign In</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="min-height:90vh;display:flex;align-items:center;padding:80px 0 40px;overflow:hidden;position:relative;">
+  <canvas id="particle-canvas"></canvas>
+  <div class="container" style="position:relative;z-index:2">
+    <div class="tag">🔬 Environmental Impact Analysis · 2026</div>
+    <h1 class="disp hero-h1" style="font-size:clamp(56px,10vw,108px);line-height:.9;margin-bottom:28px">
+      MICRO<br><span style="color:var(--a)">PLASTICS</span><br>
+      <span style="font-size:clamp(28px,4vw,48px);color:var(--muted)">HIDDEN THREAT</span>
+    </h1>
+    <p style="font-size:16px;color:var(--muted);max-width:520px;line-height:1.8;margin-bottom:36px">
+      You consume roughly <strong style="color:var(--a)">5 grams of plastic per week</strong> — the weight of a credit card. Microplastics are now everywhere: in your food, water, air, and blood.
+    </p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn btn-a" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Calculate My Impact →</button>
+      <button class="btn btn-o" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Take the Quiz</button>
+    </div>
+    <div style="margin-top:56px;display:flex;flex-wrap:wrap;gap:12px">
+      <div class="fact-pill"><span class="fact-icon">🧴</span><div><div style="font-weight:600;font-size:14px">~5g/week ingested</div><div class="mono" style="font-size:10px;color:var(--muted)">Per person globally</div></div></div>
+      <div class="fact-pill"><span class="fact-icon">🌊</span><div><div style="font-weight:600;font-size:14px">14M tons in oceans</div><div class="mono" style="font-size:10px;color:var(--muted)">Sinks to sea floor</div></div></div>
+      <div class="fact-pill"><span class="fact-icon">🫁</span><div><div style="font-weight:600;font-size:14px">Found in lungs</div><div class="mono" style="font-size:10px;color:var(--muted)">Detected in 11 organs</div></div></div>
+      <div class="fact-pill"><span class="fact-icon">🐠</span><div><div style="font-weight:600;font-size:14px">73% of fish contain</div><div class="mono" style="font-size:10px;color:var(--muted)">Marine microplastics</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE COUNTERS -->
+<section class="alt" style="padding:48px 0">
+  <div class="container">
+    <div class="grid3" style="gap:20px">
+      <div class="card card-glow stat-card">
+        <div class="stat-val" id="counter-produced">0</div>
+        <div class="stat-lbl">🏭 Plastic Produced Today (tonnes)</div>
+      </div>
+      <div class="card card-glow stat-card">
+        <div class="stat-val" id="counter-ocean">171,000</div>
+        <div class="stat-lbl">🌊 Ocean Microplastic Particles (billions)</div>
+      </div>
+      <div class="card card-glow stat-card">
+        <div class="stat-val" id="counter-ingested" style="font-size:36px">0</div>
+        <div class="stat-lbl">🧬 Particles Ingested Since You Opened This Page</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DID YOU KNOW -->
+<section id="facts" style="padding:48px 0">
+  <div class="container">
+    <div class="tag">💡 Did You Know?</div>
+    <h2 class="disp" style="font-size:clamp(28px,5vw,52px);margin-bottom:24px">MICROPLASTIC FACTS</h2>
+    <div class="fact-rotator" id="fact-rotator">
+      <div class="mono" style="font-size:10px;color:var(--a);margin-bottom:10px;letter-spacing:.12em">REFRESHES WITH EVERY VISIT</div>
+      <div id="fact-text" style="font-size:16px;line-height:1.8;font-weight:500"></div>
+      <div id="fact-source" class="mono" style="font-size:10px;color:var(--muted);margin-top:10px"></div>
+      <button class="btn btn-ghost" style="margin-top:14px;font-size:10px;padding:6px 14px" onclick="nextFact()">Next Fact →</button>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT ARE MICROPLASTICS -->
+<section id="what" class="alt">
+  <div class="container">
+    <div class="tag">🔬 Definition</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">WHAT ARE MICROPLASTICS?</h2>
+    <p style="color:var(--muted);max-width:680px;line-height:1.8;font-size:15px;margin-bottom:48px">
+      Microplastics are plastic fragments <strong style="color:var(--text)">smaller than 5mm</strong> — some invisible to the naked eye. They never fully break down; they only get smaller, entering water supplies, food chains, and ultimately our bodies.
+    </p>
+    <div class="grid2" style="gap:24px;margin-bottom:40px">
+      <div class="card card-glow">
+        <div style="font-size:40px;margin-bottom:12px">🔵</div>
+        <div class="disp" style="font-size:28px;color:var(--a);margin-bottom:8px">PRIMARY</div>
+        <p style="color:var(--muted);font-size:14px;line-height:1.7">Intentionally manufactured at micro-scale. Found in cosmetic microbeads, toothpaste, industrial abrasives, and synthetic clothing fibres. <strong style="color:var(--text)">35% of ocean microplastics</strong> come from synthetic textiles alone.</p>
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px">
+          <span class="chip active" style="cursor:default">Microbeads</span>
+          <span class="chip active" style="cursor:default">Fibres</span>
+          <span class="chip active" style="cursor:default">Pellets</span>
+        </div>
+      </div>
+      <div class="card card-glow">
+        <div style="font-size:40px;margin-bottom:12px">🔴</div>
+        <div class="disp" style="font-size:28px;color:var(--warn);margin-bottom:8px">SECONDARY</div>
+        <p style="color:var(--muted);font-size:14px;line-height:1.7">Form when larger plastic items break down under UV light, wind, waves, and physical abrasion. Plastic bottles, bags, and packaging fragment into billions of particles over decades.</p>
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px">
+          <span class="chip active" style="border-color:var(--warn);color:var(--warn);background:rgba(255,159,0,.1);cursor:default">Bottle Fragments</span>
+          <span class="chip active" style="border-color:var(--warn);color:var(--warn);background:rgba(255,159,0,.1);cursor:default">Tire Dust</span>
+          <span class="chip active" style="border-color:var(--warn);color:var(--warn);background:rgba(255,159,0,.1);cursor:default">Film Breakdown</span>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:.1em">SIZE SCALE COMPARISON</div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+        <div style="text-align:center"><div style="width:60px;height:60px;border-radius:50%;background:var(--aglow);border:2px solid var(--a);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:24px">💳</div><div class="mono" style="font-size:9px;color:var(--muted)">Credit Card<br>~5mm (max)</div></div>
+        <div style="color:var(--muted);font-size:20px">→</div>
+        <div style="text-align:center"><div style="width:40px;height:40px;border-radius:50%;background:var(--aglow);border:2px solid var(--a);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:18px">🟦</div><div class="mono" style="font-size:9px;color:var(--muted)">Microbead<br>1mm</div></div>
+        <div style="color:var(--muted);font-size:20px">→</div>
+        <div style="text-align:center"><div style="width:24px;height:24px;border-radius:50%;background:var(--aglow);border:1.5px solid var(--a);margin:0 auto 6px"></div><div class="mono" style="font-size:9px;color:var(--muted)">Fibre<br>100μm</div></div>
+        <div style="color:var(--muted);font-size:20px">→</div>
+        <div style="text-align:center"><div style="width:10px;height:10px;border-radius:50%;background:var(--a);margin:0 auto 10px;box-shadow:0 0 8px var(--a)"></div><div class="mono" style="font-size:9px;color:var(--muted)">Nanoplastic<br>&lt;1μm</div></div>
+        <div style="flex:1;min-width:200px;margin-left:20px"><div style="font-size:13px;color:var(--text);line-height:1.7">Nanoplastics are so small they can <strong style="color:var(--a)">cross the blood-brain barrier</strong> and embed in organ tissue. Even at 1 micron, a single particle is <strong>70x smaller</strong> than a human hair.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFECYCLE -->
+<section id="lifecycle">
+  <div class="container">
+    <div class="tag">♻ Journey Simulation</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">LIFECYCLE OF A MICROPLASTIC</h2>
+    <p style="color:var(--muted);max-width:580px;line-height:1.8;font-size:15px;margin-bottom:40px">Click each stage to reveal what happens at that step of the journey.</p>
+    <div id="lifecycle-steps" style="display:flex;align-items:flex-start;flex-wrap:wrap;gap:4px;margin-bottom:32px"></div>
+    <div id="lifecycle-detail" class="card anim" style="min-height:100px;display:none;max-width:700px"></div>
+  </div>
+</section>
+
+<!-- DATA VISUALIZATION -->
+<section id="data" class="alt">
+  <div class="container">
+    <div class="tag">📊 Data Dashboard</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">DATA VISUALIZATION</h2>
+    <div class="chip-row">
+      <span class="chip active" onclick="setDataFilter('all',this)">All Sources</span>
+      <span class="chip" onclick="setDataFilter('ocean',this)">Ocean</span>
+      <span class="chip" onclick="setDataFilter('air',this)">Air</span>
+      <span class="chip" onclick="setDataFilter('human',this)">Human Body</span>
+      <span class="chip" onclick="setDataFilter('food',this)">Food & Water</span>
+      <span class="chip" onclick="setDataFilter('soil',this)">Soil</span>
+    </div>
+
+    <!-- ALL panel -->
+    <div class="data-panel active" id="panel-all">
+      <div class="grid2" style="gap:24px;margin-bottom:24px">
+        <div class="card" style="position:relative">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:.08em">OCEAN MICROPLASTIC GROWTH (MT) — HOVER FOR DETAILS</div>
+          <div id="bar-chart" style="display:flex;gap:5px;align-items:flex-end;height:140px;position:relative"></div>
+          <div id="bar-labels" style="display:flex;gap:5px;margin-top:6px"></div>
+          <div class="chart-tooltip" id="bar-tooltip"></div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;align-items:center;position:relative">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:.08em;align-self:flex-start">POLLUTION SOURCE BREAKDOWN — HOVER SEGMENTS</div>
+          <svg id="donut-svg" width="200" height="200" viewBox="0 0 200 200" class="donut-svg"></svg>
+          <div id="donut-legend" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center"></div>
+          <div class="chart-tooltip" id="donut-tooltip"></div>
+        </div>
+      </div>
+      <div class="grid2" style="gap:24px">
+        <div class="card" style="position:relative">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:.08em">MICROPLASTIC CONCENTRATION BY MEDIUM</div>
+          <div id="conc-bars"></div>
+        </div>
+        <div class="card" style="position:relative">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:.08em">REGIONAL POLLUTION INDEX (0–100)</div>
+          <div id="region-bars"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OCEAN panel -->
+    <div class="data-panel" id="panel-ocean">
+      <div class="grid2" style="gap:24px">
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">OCEAN DEPTH DISTRIBUTION (particles/m³)</div>
+          <div id="ocean-depth-bars"></div>
+        </div>
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">TOP OCEAN POLLUTANTS BY TYPE</div>
+          <div id="ocean-type-bars"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:24px">
+        <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:12px">KEY OCEAN FACTS</div>
+        <div class="grid3" style="gap:14px">
+          <div style="text-align:center;padding:16px;border:1px solid var(--border);border-radius:4px"><div class="disp" style="font-size:36px;color:var(--a)">171MT</div><div class="mono" style="font-size:10px;color:var(--muted)">Ocean microplastics (2024)</div></div>
+          <div style="text-align:center;padding:16px;border:1px solid var(--border);border-radius:4px"><div class="disp" style="font-size:36px;color:var(--warn)">8100</div><div class="mono" style="font-size:10px;color:var(--muted)">Particles/m³ at surface</div></div>
+          <div style="text-align:center;padding:16px;border:1px solid var(--border);border-radius:4px"><div class="disp" style="font-size:36px;color:var(--danger)">73%</div><div class="mono" style="font-size:10px;color:var(--muted)">Mesopelagic fish affected</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AIR panel -->
+    <div class="data-panel" id="panel-air">
+      <div class="grid2" style="gap:24px">
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">AIRBORNE PARTICLES BY LOCATION (particles/m³/day)</div>
+          <div id="air-location-bars"></div>
+        </div>
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">INDOOR vs OUTDOOR COMPARISON</div>
+          <div id="air-compare-bars"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUMAN BODY panel -->
+    <div class="data-panel" id="panel-human">
+      <div class="card" style="margin-bottom:24px">
+        <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">MICROPLASTICS FOUND IN HUMAN TISSUES (% of samples)</div>
+        <div id="human-tissue-bars"></div>
+      </div>
+      <div class="grid2" style="gap:24px">
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:12px">HEALTH EFFECTS UNDER RESEARCH</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="padding:12px;border:1px solid rgba(255,64,96,.3);border-radius:4px;background:rgba(255,64,96,.06)"><div style="font-weight:600;color:var(--danger);margin-bottom:4px">Inflammation</div><div style="font-size:13px;color:var(--muted)">Microplastics trigger immune responses in lungs and gut tissue. IARC is evaluating carcinogenicity as of 2024.</div></div>
+            <div style="padding:12px;border:1px solid rgba(255,159,0,.3);border-radius:4px;background:rgba(255,159,0,.06)"><div style="font-weight:600;color:var(--warn);margin-bottom:4px">Endocrine Disruption</div><div style="font-size:13px;color:var(--muted)">Plastic additives (BPA, phthalates) act as endocrine disruptors, interfering with hormone signalling.</div></div>
+            <div style="padding:12px;border:1px solid rgba(0,200,255,.3);border-radius:4px;background:rgba(0,200,255,.06)"><div style="font-weight:600;color:var(--a);margin-bottom:4px">Neurotoxicity</div><div style="font-size:13px;color:var(--muted)">Nanoplastics have been found crossing the blood-brain barrier in animal studies (Nature Neuroscience, 2023).</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:12px">WEEKLY INTAKE BY ROUTE</div>
+          <div id="human-intake-bars"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOD panel -->
+    <div class="data-panel" id="panel-food">
+      <div class="grid2" style="gap:24px">
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">MICROPLASTICS IN FOODS (particles/unit)</div>
+          <div id="food-bars"></div>
+        </div>
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">WATER SOURCE COMPARISON (particles/L)</div>
+          <div id="water-bars"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOIL panel -->
+    <div class="data-panel" id="panel-soil">
+      <div class="grid2" style="gap:24px">
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">SOIL MICROPLASTIC CONCENTRATION (particles/kg)</div>
+          <div id="soil-bars"></div>
+        </div>
+        <div class="card">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:12px">SOURCES OF SOIL CONTAMINATION</div>
+          <div id="soil-source-bars"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE MAP -->
+<section id="map-section">
+  <div class="container">
+    <div class="tag">🗺️ Regional Data</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">GLOBAL POLLUTION MAP</h2>
+    <p style="color:var(--muted);max-width:540px;line-height:1.8;font-size:15px;margin-bottom:24px">Click any marker to see regional microplastic pollution index and data. Data from IUCN, UNEP & peer-reviewed studies.</p>
+    <div id="pollution-map"></div>
+    <div id="map-detail" style="display:none;margin-top:16px" class="card anim"></div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources" class="alt">
+  <div class="container">
+    <div class="tag">🏭 Source Breakdown</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">WHERE DO THEY COME FROM?</h2>
+    <p style="color:var(--muted);max-width:520px;line-height:1.8;font-size:15px;margin-bottom:40px">Click any source to see detailed data.</p>
+    <div class="grid3" id="source-grid" style="margin-bottom:24px"></div>
+    <div id="source-detail" style="display:none" class="card anim"></div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator">
+  <div class="container">
+    <div class="tag">⭐ Personal Impact Calculator</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">HOW EXPOSED ARE YOU?</h2>
+    <p style="color:var(--muted);max-width:540px;line-height:1.8;font-size:15px;margin-bottom:40px">Answer questions to estimate your weekly exposure and get personalised lifestyle suggestions.</p>
+    <div class="grid2" style="gap:24px;align-items:start">
+      <div class="card">
+        <div class="fg"><label>💧 Primary water source</label>
+          <select id="c-water" onchange="calcUpdate()">
+            <option value="tap">Tap water (unfiltered)</option>
+            <option value="filtered">Filtered tap water</option>
+            <option value="bottled">Plastic bottled water</option>
+            <option value="glass">Glass bottled water</option>
+            <option value="ro">Reverse osmosis filtered</option>
+          </select>
+        </div>
+        <div class="fg"><label>🐟 Seafood consumption</label>
+          <select id="c-seafood" onchange="calcUpdate()">
+            <option value="none">None / vegan</option>
+            <option value="low">Rarely (1–2×/month)</option>
+            <option value="med" selected>Weekly (1–2×/week)</option>
+            <option value="high">Several times/week</option>
+            <option value="daily">Daily</option>
+          </select>
+        </div>
+        <div class="fg"><label>📦 Packaged / processed food</label>
+          <select id="c-packaged" onchange="calcUpdate()">
+            <option value="low">Rarely — mostly fresh whole foods</option>
+            <option value="med" selected>Moderate mix</option>
+            <option value="high">Most meals packaged</option>
+            <option value="vhigh">Almost entirely processed</option>
+          </select>
+        </div>
+        <div class="fg"><label>👕 Clothing material</label>
+          <select id="c-clothing" onchange="calcUpdate()">
+            <option value="natural">Mostly natural (cotton/linen/wool)</option>
+            <option value="mixed" selected>Mixed natural/synthetic</option>
+            <option value="synthetic">Mostly synthetic (polyester/nylon)</option>
+          </select>
+        </div>
+        <div class="fg"><label>💄 Cosmetics / personal care</label>
+          <select id="c-cosmetics" onchange="calcUpdate()">
+            <option value="none">None / minimal (natural only)</option>
+            <option value="low" selected>Light use (few products)</option>
+            <option value="med">Moderate (daily skincare routine)</option>
+            <option value="high">Heavy (many products daily)</option>
+          </select>
+        </div>
+        <div class="fg"><label>🏙️ Living environment</label>
+          <select id="c-env" onchange="calcUpdate()">
+            <option value="rural">Rural / nature / countryside</option>
+            <option value="sub" selected>Suburban / small city</option>
+            <option value="urban">Dense urban / city centre</option>
+          </select>
+        </div>
+        <div class="fg"><label>🍵 Hot drinks in plastic cups</label>
+          <select id="c-cups" onchange="calcUpdate()">
+            <option value="none">None — use reusable mug always</option>
+            <option value="low" selected>Occasionally (1–3×/week)</option>
+            <option value="high">Daily or more</option>
+          </select>
+        </div>
+        <div class="fg"><label>🧹 Flooring type at home</label>
+          <select id="c-floor" onchange="calcUpdate()">
+            <option value="natural">Mostly hardwood / tile / natural</option>
+            <option value="mixed" selected>Mixed carpet & hard floor</option>
+            <option value="carpet">Mostly synthetic carpet</option>
+          </select>
+        </div>
+        <div class="fg"><label>🌬️ Air purifier at home?</label>
+          <select id="c-purifier" onchange="calcUpdate()">
+            <option value="hepa">Yes — HEPA filter</option>
+            <option value="basic">Yes — basic filter</option>
+            <option value="none" selected>No air purifier</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div class="card card-glow" style="margin-bottom:16px;text-align:center;padding:32px" id="calc-result">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:8px">EST. WEEKLY MICROPLASTIC INTAKE</div>
+          <div class="disp" id="calc-particles" style="font-size:64px;color:var(--a)">—</div>
+          <div class="mono" style="font-size:11px;color:var(--muted)">PARTICLES / WEEK</div>
+          <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+            <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:4px">ENVIRONMENTAL IMPACT SCORE</div>
+            <div class="progress-bar"><div class="progress-fill" id="calc-score-bar" style="width:0%;background:linear-gradient(90deg,var(--ok),var(--a))"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px">
+              <span class="mono" style="font-size:10px;color:var(--muted)">LOW</span>
+              <span class="mono" style="font-size:13px;color:var(--a)" id="calc-score-text">—</span>
+              <span class="mono" style="font-size:10px;color:var(--muted)">HIGH</span>
+            </div>
+          </div>
+          <div style="margin-top:16px" id="calc-breakdown"></div>
+        </div>
+        <div class="card" id="calc-tips-card" style="display:none">
+          <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:12px;letter-spacing:.08em">💡 PERSONALISED LIFESTYLE SUGGESTIONS</div>
+          <div id="calc-tips"></div>
+          <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px">
+            <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:8px">WEEKLY REDUCTION POTENTIAL</div>
+            <div id="calc-reduction"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE vs AFTER -->
+<section id="compare" class="alt">
+  <div class="container">
+    <div class="tag">📈 Before vs After</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">IMPACT OF HABIT CHANGE</h2>
+    <p style="color:var(--muted);max-width:540px;line-height:1.8;font-size:15px;margin-bottom:40px">See how small habit changes dramatically reduce your microplastic intake.</p>
+    <div class="card" style="max-width:800px">
+      <div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:20px;letter-spacing:.08em">WEEKLY MICROPLASTIC PARTICLES — BEFORE vs AFTER CHANGES</div>
+      <div id="compare-bars"></div>
+      <div style="display:flex;gap:20px;margin-top:20px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:14px;height:14px;border-radius:2px;background:linear-gradient(90deg,var(--danger),#ff6b00)"></div><span class="mono" style="font-size:11px;color:var(--muted)">Before changes</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:14px;height:14px;border-radius:2px;background:linear-gradient(90deg,var(--adim),var(--a))"></div><span class="mono" style="font-size:11px;color:var(--muted)">After changes</span></div>
+      </div>
+      <div id="compare-summary" style="margin-top:20px;padding:16px;background:var(--aglow);border:1px solid var(--a);border-radius:4px;display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- REWARDS SYSTEM -->
+<section id="rewards">
+  <div class="container">
+    <div class="tag">🏆 Rewards & Progress</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">YOUR JOURNEY</h2>
+    <p style="color:var(--muted);max-width:600px;line-height:1.8;font-size:15px;margin-bottom:32px">Complete daily and weekly quests to reduce your plastic footprint. Earn XP, level up, and claim real rewards including Amazon gift cards and eco-brand coupons.</p>
+
+    <!-- User profile / sign-in prompt -->
+    <div id="rewards-login-prompt" class="card" style="text-align:center;padding:40px;margin-bottom:24px">
+      <div style="font-size:48px;margin-bottom:12px">🔐</div>
+      <div class="disp" style="font-size:28px;margin-bottom:8px">Sign In to Track Progress</div>
+      <div style="color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.7">Create a free account to save your quests, earn rewards, and track your plastic-reduction journey over time.</div>
+      <button class="btn btn-a" onclick="window.location.href='index.html'">Create Free Account →</button>
+    </div>
+
+    <div id="rewards-content" style="display:none">
+      <!-- User stats bar -->
+      <div class="card" style="margin-bottom:24px">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <div class="level-ring">
+            <div class="mono" style="font-size:9px;color:var(--muted)">LVL</div>
+            <div class="disp" style="font-size:28px;color:var(--a)" id="user-level">1</div>
+          </div>
+          <div style="flex:1;min-width:200px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <div><span class="disp" style="font-size:20px;color:#d0eaf8" id="user-name-display">Explorer</span><span class="mono" style="font-size:11px;color:var(--muted);margin-left:10px" id="user-title-display">Plastic Trainee</span></div>
+              <span class="mono" style="font-size:12px;color:var(--a)" id="user-xp-display">0 / 200 XP</span>
+            </div>
+            <div class="xp-bar-outer"><div class="xp-bar-fill" id="user-xp-bar" style="width:0%"></div></div>
+            <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+              <span class="mono" style="font-size:11px;color:var(--muted)">🔥 <span id="user-streak">0</span> day streak</span>
+              <span class="mono" style="font-size:11px;color:var(--gold)">🪙 <span id="user-coins">0</span> eco-coins</span>
+              <span class="mono" style="font-size:11px;color:var(--ok)">✅ <span id="user-quests-done">0</span> quests done</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quests -->
+      <div class="grid2" style="gap:24px;margin-bottom:24px">
+        <!-- Daily quests -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div>
+              <div class="disp" style="font-size:24px">DAILY QUESTS</div>
+              <div class="mono" style="font-size:10px;color:var(--muted)">RESETS IN: <span id="daily-timer" style="color:var(--a)">—</span></div>
+            </div>
+            <span class="reward-badge badge-bronze">⚡ Daily</span>
+          </div>
+          <div id="daily-quests" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+        <!-- Weekly quests -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div>
+              <div class="disp" style="font-size:24px">WEEKLY QUESTS</div>
+              <div class="mono" style="font-size:10px;color:var(--muted)">RESETS IN: <span id="weekly-timer" style="color:var(--purple)">—</span></div>
+            </div>
+            <span class="reward-badge" style="background:rgba(180,77,255,.15);border:1px solid var(--purple);color:var(--purple)">🌟 Weekly</span>
+          </div>
+          <div id="weekly-quests" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+      </div>
+
+      <!-- Reward store -->
+      <div>
+        <div class="disp" style="font-size:24px;margin-bottom:6px">REWARD STORE</div>
+        <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:16px">REDEEM ECO-COINS FOR REAL REWARDS — LOGGED-IN USERS ONLY</div>
+        <div class="grid3" id="reward-store"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="alt">
+  <div class="container">
+    <div class="tag">🧠 Knowledge Check</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">TEST YOURSELF</h2>
+    <p style="color:var(--muted);max-width:520px;line-height:1.8;font-size:15px;margin-bottom:20px">10 questions on microplastics. Use the slider to jump to any question at will.</p>
+
+    <!-- Question slider -->
+    <div class="card" style="max-width:620px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:14px">
+        <label style="margin:0;white-space:nowrap">Jump to Q:</label>
+        <input type="range" class="range-slider" id="quiz-slider" min="0" max="9" value="0" oninput="jumpQuiz(+this.value)"/>
+        <span class="range-val" id="quiz-slider-val">1 / 10</span>
+      </div>
+    </div>
+
+    <div class="card" style="max-width:620px" id="quiz-box"></div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section id="tips">
+  <div class="container">
+    <div class="tag">💚 Take Action</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px">REDUCE YOUR IMPACT</h2>
+    <p style="color:var(--muted);max-width:540px;line-height:1.8;font-size:15px;margin-bottom:40px">Evidence-based steps ranked by impact reduction potential. Based on WHO, UNEP & peer-reviewed research.</p>
+    <div class="grid3" id="tips-grid"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<section id="leaderboard" class="alt">
+  <div class="container">
+    <div class="tag">🏆 Community Rankings</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:8px;">LEADERBOARD</h2>
+    <p style="color:var(--muted);max-width:540px;line-height:1.8;font-size:15px;margin-bottom:40px;">Top eco-warriors ranked by XP. Click any profile to inspect their stats, quiz scores and rewards.</p>
+    <div class="podium-wrap" id="lb-podium"></div>
+    <div id="lb-rows" style="max-width:640px;margin:0 auto;"></div>
+    <div id="lb-empty" style="display:none;text-align:center;padding:48px;color:var(--muted);"><div style="font-size:48px;margin-bottom:12px;">🌱</div><p>No users yet — sign up to claim rank #1!</p></div>
+  </div>
+</section>
+
+<section id="item-calc">
+  <div class="container">
+    <div class="tag">🧪 Item Calculator</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:8px;">WHAT'S IN YOUR STUFF?</h2>
+    <p style="color:var(--muted);max-width:600px;line-height:1.8;font-size:15px;margin-bottom:36px;">Click any item to see how many microplastics it releases or contains, and what you can do about it.</p>
+    <div class="grid4" id="ic-grid" style="gap:14px;margin-bottom:28px;"></div>
+    <div id="ic-result" style="display:none;" class="card anim"></div>
+  </div>
+</section>
+
+<section id="reviews" class="alt">
+  <div class="container">
+    <div class="tag">💬 Community Reviews</div>
+    <h2 class="disp" style="font-size:clamp(36px,6vw,64px);margin-bottom:12px;">WHAT PEOPLE SAY</h2>
+    <p style="color:var(--muted);max-width:540px;line-height:1.8;font-size:15px;margin-bottom:28px;">Genuine feedback from users who've explored the site and changed their habits.</p>
+    <div style="display:flex;gap:12px;margin-bottom:32px;flex-wrap:wrap;align-items:center;">
+      <button class="btn btn-a" onclick="openReviewModal()">+ Write a Review</button>
+      <div id="avg-stars" style="font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px;"></div>
+    </div>
+    <div class="grid3" id="reviews-grid" style="gap:16px;"></div>
+    <div id="reviews-empty" style="display:none;text-align:center;padding:40px;color:var(--muted);"><div style="font-size:40px;margin-bottom:12px;">💬</div><div>Be the first to leave a review!</div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="mono" style="font-size:12px;color:var(--a);margin-bottom:16px;letter-spacing:.1em">VERIFIED SOURCES & REFERENCES</div>
+    <div class="grid3" style="gap:12px;margin-bottom:24px" id="footer-sources"></div>
+    <div class="mono" style="font-size:10px;color:var(--muted);text-align:center;margin-top:24px;border-top:1px solid var(--border);padding-top:20px">
+      MICROPLASTICS.io · Environmental Impact Analysis Project · 2026 · All data from peer-reviewed & institutional sources
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let currentUser = null;
+
+// Bridge called by Firebase module once auth is confirmed
+window._firebaseLogin = function(userData) {
+  currentUser = userData;
+  afterLogin();
+};
+const DB_KEY = 'mplastics_users';
+const SESSION_KEY = 'mplastics_session';
+
+function getUsers(){ try{return JSON.parse(localStorage.getItem(DB_KEY)||'{}')}catch{return{}} }
+function saveUsers(u){ localStorage.setItem(DB_KEY,JSON.stringify(u)); }
+function getSession(){ try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{return null} }
+function saveSession(u){ localStorage.setItem(SESSION_KEY,JSON.stringify(u)); }
+
+function defaultUserData(name,email){
+  return {
+    name, email,
+    xp:0, level:1, streak:0, coins:0, questsDone:0,
+    lastLogin: new Date().toDateString(),
+    dailyReset: Date.now(),
+    weeklyReset: Date.now(),
+    dailyProgress:{},
+    weeklyProgress:{},
+    claimedRewards:[],
+    calcData: {}
+  };
+}
+
+function loadSession(){
+  const s = getSession();
+  if(!s) return;
+  const users = getUsers();
+  if(users[s]) { currentUser = users[s]; afterLogin(); }
+}
+
+function saveCurrentUser(){
+  if(!currentUser) return;
+  const users = getUsers();
+  users[currentUser.email] = currentUser;
+  saveUsers(users);
+  saveSession(currentUser.email);
+}
+
+// ═══════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════
+function openAuth(){ document.getElementById('auth-modal').classList.add('open'); }
+function closeAuth(){ document.getElementById('auth-modal').classList.remove('open'); }
+function switchAuthTab(t){
+  document.getElementById('auth-signin').style.display = t==='signin'?'block':'none';
+  document.getElementById('auth-signup').style.display = t==='signup'?'block':'none';
+  document.getElementById('tab-signin').classList.toggle('active',t==='signin');
+  document.getElementById('tab-signup').classList.toggle('active',t==='signup');
+}
+function doSignUp(){
+  const name=document.getElementById('su-name').value.trim();
+  const email=document.getElementById('su-email').value.trim().toLowerCase();
+  const pass=document.getElementById('su-pass').value;
+  if(!name||!email||pass.length<6){ showToast('Please fill all fields (min 6 char password)','error'); return; }
+  const users = getUsers();
+  if(users[email]){ showToast('Email already registered — please sign in','error'); return; }
+  const ud = defaultUserData(name,email);
+  ud.passHash = btoa(pass);
+  ud.joined = new Date().toISOString();
+  ud.lastSeen = new Date().toISOString();
+  ud.lastDevice = getDeviceLabel();
+  users[email] = ud;
+  saveUsers(users);
+  currentUser = ud;
+  saveSession(email);
+  closeAuth();
+  afterLogin();
+  queueCloudLog('signup', ud);
+  showToast(`Welcome, ${name}! Account created 🎉`,'ok');
+}
+function doSignIn(){
+  const email=document.getElementById('si-email').value.trim().toLowerCase();
+  const pass=document.getElementById('si-pass').value;
+  const users = getUsers();
+  const ud = users[email];
+  if(!ud || ud.passHash !== btoa(pass)){ showToast('Invalid email or password','error'); return; }
+  // streak logic
+  const today = new Date().toDateString();
+  if(ud.lastLogin !== today){
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    if(ud.lastLogin === yesterday) ud.streak = (ud.streak||0)+1;
+    else ud.streak = 1;
+    ud.lastLogin = today;
+  }
+  ud.lastSeen = new Date().toISOString();
+  ud.lastDevice = getDeviceLabel();
+  currentUser = ud;
+  saveSession(email);
+  saveCurrentUser();
+  closeAuth();
+  afterLogin();
+  queueCloudLog('login', ud);
+  showToast(`Welcome back, ${ud.name}! 🔥 ${ud.streak} day streak`,'ok');
+}
+function signOut(){
+  currentUser = null;
+  localStorage.removeItem(SESSION_KEY);
+  document.getElementById('auth-btn').textContent='Sign In';
+  document.getElementById('auth-btn').onclick=function(){window.location.href='index.html';};
+  document.getElementById('rewards-login-prompt').style.display='block';
+  document.getElementById('rewards-content').style.display='none';
+  showToast('Signed out');
+}
+function afterLogin(){
+  checkQuestResets();
+  document.getElementById('auth-btn').textContent = currentUser.name.split(' ')[0]+' ▾';
+  document.getElementById('auth-btn').onclick = openProfileModal;
+  document.getElementById('rewards-login-prompt').style.display='none';
+  document.getElementById('rewards-content').style.display='block';
+  renderUserStats();
+  renderQuests();
+  renderRewardStore();
+  setTimeout(renderLeaderboard,50);
+}
+
+// ═══════════════════════════════════════
+// DARK MODE & MUSIC
+// ═══════════════════════════════════════
+function toggleDark(){
+  document.body.classList.toggle('light');
+  document.getElementById('dark-toggle').textContent=document.body.classList.contains('light')?'🌙 Dark':'☀ Light';
+}
+let musicPlaying=false;
+let audioCtx=null;
+let musicNodes=[];
+function toggleMusic(){
+  if(!musicPlaying){
+    startAmbientMusic();
+    document.getElementById('music-toggle').textContent='🔊 Music';
+    musicPlaying=true;
+  } else {
+    stopAmbientMusic();
+    document.getElementById('music-toggle').textContent='🔇 Music';
+    musicPlaying=false;
+  }
+}
+function startAmbientMusic(){
+  try{
+    audioCtx = new(window.AudioContext||window.webkitAudioContext)();
+    const notes=[130.81,164.81,196,246.94,261.63,329.63];
+    function playNote(){
+      if(!audioCtx||audioCtx.state==='closed') return;
+      const osc=audioCtx.createOscillator();
+      const gain=audioCtx.createGain();
+      osc.type='sine';
+      osc.frequency.value=notes[Math.floor(Math.random()*notes.length)];
+      gain.gain.setValueAtTime(0,audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.04,audioCtx.currentTime+0.5);
+      gain.gain.linearRampToValueAtTime(0,audioCtx.currentTime+3);
+      osc.connect(gain);gain.connect(audioCtx.destination);
+      osc.start();osc.stop(audioCtx.currentTime+3.5);
+      musicNodes.push(osc);
+    }
+    playNote();
+    const iv=setInterval(()=>{if(!musicPlaying){clearInterval(iv);return;}playNote();},2800);
+    musicNodes.push({stop:()=>clearInterval(iv)});
+  }catch(e){showToast('Web Audio not supported','error');}
+}
+function stopAmbientMusic(){
+  if(audioCtx){try{audioCtx.close();}catch(e){} audioCtx=null;}
+  musicNodes=[];
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=type==='error'?'#ff4060':type==='ok'?'#00e5a0':'var(--a)';
+  t.style.color='#03090f';
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',2600);
+}
+
+// ═══════════════════════════════════════
+// PARTICLES
+// ═══════════════════════════════════════
+(function initParticles(){
+  const canvas=document.getElementById('particle-canvas');
+  const ctx=canvas.getContext('2d');
+  let particles=[];
+  function resize(){canvas.width=canvas.parentElement.offsetWidth;canvas.height=canvas.parentElement.offsetHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<60;i++) particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+0.5,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,a:Math.random()*.6+.1});
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,200,255,${p.a})`;ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;
+      if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══════════════════════════════════════
+// LIVE COUNTERS
+// ═══════════════════════════════════════
+const startTime=Date.now();
+const plasticPerDay=1095890;
+let oceanBase=171000;
+function updateCounters(){
+  const elapsed=(Date.now()-startTime)/1000;
+  document.getElementById('counter-produced').textContent=Math.floor(plasticPerDay*(elapsed/86400)).toLocaleString();
+  document.getElementById('counter-ocean').textContent=(oceanBase+Math.floor(elapsed*.002)).toLocaleString();
+  document.getElementById('counter-ingested').textContent=Math.floor(elapsed*.165).toLocaleString();
+}
+setInterval(updateCounters,1000);updateCounters();
+
+// ═══════════════════════════════════════
+// DID YOU KNOW FACTS
+// ═══════════════════════════════════════
+const DID_YOU_KNOW=[
+  {fact:"The average person unknowingly consumes about 5 grams of microplastics per week — equivalent to a full credit card in weight.",source:"WWF / University of Newcastle, 2019"},
+  {fact:"Microplastics have been detected in human breast milk, meaning newborns can be exposed even before eating solid food.",source:"Polymers (MDPI), 2022"},
+  {fact:"There are now more microplastic particles in the ocean than there are stars in the Milky Way galaxy.",source:"IUCN Ocean Report, 2021"},
+  {fact:"A single fleece jacket can release up to 250,000 synthetic microfibers per wash cycle into wastewater systems.",source:"Environmental Science & Technology, 2016"},
+  {fact:"Microplastics were found in 93% of bottled water samples from 11 brands across 9 countries tested by researchers at SUNY Fredonia.",source:"Frontiers in Chemistry / Orb Media, 2018"},
+  {fact:"Researchers found microplastics in the placentas of unborn babies — particles from both the mother's and fetal side of the placenta.",source:"Environment International, 2020 — Ragusa et al."},
+  {fact:"Sea salt can contain up to 600 microplastic particles per kilogram, meaning your daily seasoning may carry them too.",source:"Environmental Science & Technology, 2015"},
+  {fact:"It would take over 450 years for a PET plastic bottle to fully decompose in a marine environment.",source:"UNEP / National Geographic"},
+  {fact:"Less than 9% of all the plastic ever produced (≈9.2 billion tonnes) has been recycled. 12% was incinerated; the rest lingers in the environment.",source:"Science Advances, Geyer et al., 2017"},
+  {fact:"Indoor air can carry 2 to 8 times more microplastic particles per cubic metre than outdoor urban air, largely from synthetic textiles and furniture.",source:"Environmental Research, 2020"},
+  {fact:"Microplastics have been found in the deepest part of the ocean — the Mariana Trench, nearly 11 km below sea level.",source:"Royal Society Open Science, 2019"},
+  {fact:"Drinking water from plastic bottles exposes you to up to 94 microplastic particles per litre — 20× more than filtered tap water.",source:"WHO, Microplastics in Drinking Water, 2019"},
+  {fact:"Synthetic tyres are one of the biggest sources of microplastics — every kilometre driven releases thousands of rubber particles into the environment.",source:"IUCN Primary Microplastics Report, 2017"},
+  {fact:"Scientists have found microplastics in the testicles of men, which may be linked to declining sperm counts observed globally over recent decades.",source:"Science of the Total Environment, 2023"},
+];
+let factIndex = Math.floor(Math.random()*DID_YOU_KNOW.length);
+function showFact(){
+  const f = DID_YOU_KNOW[factIndex];
+  document.getElementById('fact-text').textContent = f.fact;
+  document.getElementById('fact-source').textContent = '— ' + f.source;
+}
+function nextFact(){ factIndex=(factIndex+1)%DID_YOU_KNOW.length; showFact(); }
+showFact();
+
+// ═══════════════════════════════════════
+// LIFECYCLE
+// ═══════════════════════════════════════
+const LIFECYCLE=[
+  {icon:'🧴',label:'Product Created',color:'#00c8ff',text:'Plastic is manufactured from fossil fuels (mainly petroleum). A PET bottle uses ~3.4MJ of energy to produce. At this stage it contains stabilisers and plasticisers — chemicals that will later leach into the environment.'},
+  {icon:'🛒',label:'Consumer Use',color:'#29b6f6',text:'Plastic is used — once, in most cases. Of the 380M tonnes produced annually, roughly 40% is single-use packaging. Washing synthetic clothing releases up to 700,000 plastic fibres per wash cycle into wastewater.'},
+  {icon:'🗑️',label:'Disposal',color:'#ff9f00',text:'Less than 10% of all plastic ever produced has been recycled. Most is landfilled (55%), incinerated (25%), or leaks directly into the environment (20%). India alone generates 3.5M tonnes of plastic waste per year.'},
+  {icon:'☀️',label:'Breakdown',color:'#ff6b00',text:'UV radiation, wind, and wave action fragment plastics into increasingly smaller pieces. A plastic bottle that enters the ocean will break into ~10,000 microplastic particles within 5 years, and nano-plastics within decades.'},
+  {icon:'🌊',label:'Water Entry',color:'#0099cc',text:'Microplastics enter waterways via runoff, storm drains, and wastewater effluent. Filters at water treatment plants can remove ~70% but nanoplastics pass through. Tap water contains an avg of 4.23 particles per litre globally.'},
+  {icon:'🐟',label:'Marine Life',color:'#006699',text:'Marine organisms mistake microplastics for food. Ingested particles can block digestive tracts, cause starvation, and transfer toxic chemicals up the food chain. 73% of open-ocean mesopelagic fish contain microplastics.'},
+  {icon:'🧬',label:'Human Intake',color:'#ff4060',text:'Microplastics enter us via contaminated seafood, drinking water, breathing indoor air, and even through skin contact. Recent studies found microplastics in blood (80% of tested individuals), lungs, liver, and the placenta.'},
+];
+(function renderLifecycle(){
+  const container=document.getElementById('lifecycle-steps');
+  LIFECYCLE.forEach((step,i)=>{
+    if(i>0){const a=document.createElement('div');a.className='lifecycle-arrow';a.innerHTML='→';container.appendChild(a);}
+    const el=document.createElement('div');
+    el.className='card lifecycle-step';el.style.minWidth='120px';el.style.flex='1';
+    el.innerHTML=`<span class="step-icon">${step.icon}</span><div class="mono" style="font-size:10px;color:var(--muted);letter-spacing:.06em">${step.label}</div>`;
+    el.onclick=()=>revealLifecycle(i,el,step);
+    container.appendChild(el);
+  });
+})();
+let activeLifecycleEl=null;
+function revealLifecycle(i,el,step){
+  if(activeLifecycleEl)activeLifecycleEl.classList.remove('active');
+  el.classList.add('active');activeLifecycleEl=el;
+  const d=document.getElementById('lifecycle-detail');
+  d.style.display='block';
+  d.innerHTML=`<div style="display:flex;gap:14px;align-items:flex-start"><span style="font-size:36px;flex-shrink:0">${step.icon}</span><div><div class="disp" style="font-size:24px;color:${step.color};margin-bottom:6px">${step.label}</div><p style="color:var(--muted);font-size:14px;line-height:1.8">${step.text}</p></div></div>`;
+  d.className='card anim';
+}
+
+// ═══════════════════════════════════════
+// HELPER: render horizontal bar
+// ═══════════════════════════════════════
+function renderHBars(containerId, data, opts={}){
+  const el=document.getElementById(containerId); if(!el)return;
+  const max=Math.max(...data.map(d=>d.val))||1;
+  el.innerHTML=data.map(d=>{
+    const pct=Math.min((d.val/max)*100,100);
+    const color=d.color||'var(--a)';
+    const tip=opts.unit?`${d.val.toLocaleString()} ${opts.unit}`:`${d.val}`;
+    return `<div style="margin-bottom:${opts.gap||10}px" class="bar-row" title="${d.label}: ${tip}">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <span style="font-size:12px;color:var(--text)">${d.label}</span>
+        <span class="mono" style="font-size:11px;color:${color}">${tip}</span>
+      </div>
+      <div class="progress-bar" style="height:10px">
+        <div class="progress-fill" style="width:${pct}%;background:${color};transition:width .8s ease" 
+          onmouseenter="this.style.opacity='.75'" onmouseleave="this.style.opacity='1'"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// DATA VISUALIZATION
+// ═══════════════════════════════════════
+const GROWTH_DATA=[
+  {year:'2000',val:5},{year:'2005',val:10},{year:'2010',val:23},
+  {year:'2015',val:58},{year:'2020',val:96},{year:'2024',val:171},{year:'2030*',val:250}
+];
+function renderBarChart(){
+  const max=Math.max(...GROWTH_DATA.map(d=>d.val));
+  const bc=document.getElementById('bar-chart');
+  const bl=document.getElementById('bar-labels');
+  const tt=document.getElementById('bar-tooltip');
+  bc.innerHTML='';bl.innerHTML='';
+  GROWTH_DATA.forEach(d=>{
+    const pct=(d.val/max)*100;
+    const col=d.year==='2030*'?'rgba(0,200,255,.4)':'var(--a)';
+    const bar=document.createElement('div');
+    bar.style.cssText=`flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;`;
+    bar.className='bar-col';
+    const fill=document.createElement('div');
+    fill.style.cssText=`width:85%;height:${pct}%;border-radius:2px 2px 0 0;background:${col};position:relative;`;
+    fill.addEventListener('mouseenter',(e)=>{
+      fill.style.opacity='.75';
+      tt.style.display='block';tt.textContent=`${d.year}: ${d.val}MT`;
+    });
+    fill.addEventListener('mouseleave',()=>{fill.style.opacity='1';tt.style.display='none';});
+    fill.addEventListener('mousemove',(e)=>{
+      const rect=bc.getBoundingClientRect();
+      tt.style.left=(e.clientX-rect.left)+'px';tt.style.top=(e.clientY-rect.top-40)+'px';
+    });
+    bar.appendChild(fill);bc.appendChild(bar);
+    const lbl=document.createElement('div');
+    lbl.style.cssText='flex:1;font-family:IBM Plex Mono,monospace;font-size:9px;color:var(--muted);text-align:center;';
+    lbl.textContent=d.year;bl.appendChild(lbl);
+  });
+}
+
+const DONUT_DATA=[
+  {label:'Textiles',pct:35,color:'#00c8ff'},{label:'Tires',pct:28,color:'#ff9f00'},
+  {label:'Packaging',pct:20,color:'#ff4060'},{label:'Fishing Gear',pct:10,color:'#00e5a0'},
+  {label:'Other',pct:7,color:'#7c9cbf'}
+];
+function renderDonut(){
+  const svg=document.getElementById('donut-svg');
+  const tt=document.getElementById('donut-tooltip');
+  svg.innerHTML='';
+  const cx=100,cy=100,r=70,inner=42;
+  let cumAngle=-Math.PI/2;
+  DONUT_DATA.forEach(d=>{
+    const angle=(d.pct/100)*Math.PI*2;
+    const x1=cx+r*Math.cos(cumAngle),y1=cy+r*Math.sin(cumAngle);
+    cumAngle+=angle;
+    const x2=cx+r*Math.cos(cumAngle),y2=cy+r*Math.sin(cumAngle);
+    const xi1=cx+inner*Math.cos(cumAngle-angle),yi1=cy+inner*Math.sin(cumAngle-angle);
+    const xi2=cx+inner*Math.cos(cumAngle),yi2=cy+inner*Math.sin(cumAngle);
+    const large=angle>Math.PI?1:0;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${inner},${inner} 0 ${large},0 ${xi1},${yi1} Z`);
+    path.setAttribute('fill',d.color);path.setAttribute('opacity','0.85');path.style.cursor='pointer';
+    path.style.transition='all .2s';
+    path.addEventListener('mouseenter',e=>{
+      path.setAttribute('opacity','1');path.setAttribute('transform','scale(1.03)');
+      path.style.transformOrigin='100px 100px';
+      tt.style.display='block';tt.textContent=`${d.label}: ${d.pct}%`;
+    });
+    path.addEventListener('mouseleave',()=>{
+      path.setAttribute('opacity','0.85');path.removeAttribute('transform');tt.style.display='none';
+    });
+    path.addEventListener('mousemove',e=>{
+      const rect=svg.getBoundingClientRect();
+      tt.style.left=(e.clientX-rect.left+10)+'px';tt.style.top=(e.clientY-rect.top-20)+'px';
+    });
+    svg.appendChild(path);
+  });
+  const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x','100');t.setAttribute('y','96');t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-family','Bebas Neue,sans-serif');t.setAttribute('font-size','22');t.setAttribute('fill','var(--a)');t.textContent='SOURCE';
+  svg.appendChild(t);
+  const t2=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t2.setAttribute('x','100');t2.setAttribute('y','112');t2.setAttribute('text-anchor','middle');
+  t2.setAttribute('font-family','IBM Plex Mono,monospace');t2.setAttribute('font-size','9');t2.setAttribute('fill','var(--muted)');t2.textContent='BREAKDOWN';
+  svg.appendChild(t2);
+  document.getElementById('donut-legend').innerHTML=DONUT_DATA.map(d=>`<div style="display:flex;align-items:center;gap:5px"><div style="width:10px;height:10px;border-radius:2px;background:${d.color}"></div><span class="mono" style="font-size:10px;color:var(--muted)">${d.label} ${d.pct}%</span></div>`).join('');
+}
+
+const CONC_DATA=[
+  {label:'Bottled Water (plastic)',val:94,color:'#ff4060'},{label:'Tap Water (unfiltered)',val:4.2,color:'#ff9f00'},
+  {label:'Sea Surface',val:8100,color:'#00c8ff'},{label:'Urban Air',val:12,color:'#7c9cbf'},
+  {label:'Table Salt',val:212,color:'#00e5a0'},{label:'Seafood (serving)',val:1740,color:'#ff6b00'},
+];
+function renderConcBars(){ renderHBars('conc-bars',CONC_DATA); }
+
+const REGION_DATA=[
+  {label:'🌏 East Asia & Pacific',val:82,color:'#ff4060'},{label:'🌍 South & SE Asia',val:78,color:'#ff9f00'},
+  {label:'🌍 West Africa coast',val:72,color:'#ff6b00'},{label:'🌍 Mediterranean',val:68,color:'#ffb300'},
+  {label:'🌎 Eastern USA coast',val:55,color:'#00c8ff'},{label:'🌍 Northern Europe',val:38,color:'#00e5a0'},
+  {label:'🌎 Pacific Islands',val:90,color:'#ff4060'},{label:'🌍 Arctic regions',val:44,color:'#7c9cbf'},
+];
+function renderRegionBars(){ renderHBars('region-bars',REGION_DATA); }
+
+// Extra panel data
+function renderOceanPanel(){
+  renderHBars('ocean-depth-bars',[
+    {label:'Surface (0–10m)',val:8100,color:'#00c8ff'},{label:'Mid water (10–200m)',val:2400,color:'#29b6f6'},
+    {label:'Deep water (200–1000m)',val:690,color:'#0099cc'},{label:'Seabed sediment',val:1800000,color:'#0077aa'},
+  ],{unit:'particles/m³'});
+  renderHBars('ocean-type-bars',[
+    {label:'Synthetic fibres',val:35,color:'#00c8ff'},{label:'Fragments (packaging)',val:28,color:'#ff9f00'},
+    {label:'Pellets (nurdles)',val:18,color:'#ff4060'},{label:'Fishing line',val:11,color:'#00e5a0'},
+    {label:'Foam',val:8,color:'#7c9cbf'},
+  ],{unit:'% of total'});
+}
+function renderAirPanel(){
+  renderHBars('air-location-bars',[
+    {label:'City centre / downtown',val:55,color:'#ff4060'},{label:'Suburban area',val:28,color:'#ff9f00'},
+    {label:'Rural / countryside',val:7,color:'#00e5a0'},{label:'High altitude (Pyrenees)',val:365,color:'#7c9cbf'},
+    {label:'Arctic ice',val:14,color:'#00c8ff'},
+  ],{unit:'particles/m³/day'});
+  renderHBars('air-compare-bars',[
+    {label:'Indoor (synthetic furniture)',val:100,color:'#ff4060'},{label:'Indoor (natural materials)',val:42,color:'#ff9f00'},
+    {label:'Outdoor urban street',val:35,color:'#00c8ff'},{label:'Outdoor park',val:12,color:'#00e5a0'},
+  ],{unit:'particles/m³/day'});
+}
+function renderHumanPanel(){
+  renderHBars('human-tissue-bars',[
+    {label:'Blood (Liu et al., 2022)',val:80,color:'#ff4060'},{label:'Lungs',val:87,color:'#ff9f00'},
+    {label:'Liver',val:76,color:'#ffb300'},{label:'Kidney',val:65,color:'#ff6b00'},
+    {label:'Placenta',val:100,color:'#ff4060'},{label:'Testes (Zhao et al., 2023)',val:100,color:'#ff4060'},
+    {label:'Brain tissue (animal)',val:100,color:'#ff4060'},
+  ],{unit:'% of samples'});
+  renderHBars('human-intake-bars',[
+    {label:'Drinking water',val:2000,color:'#00c8ff'},{label:'Breathing (indoor)',val:1200,color:'#7c9cbf'},
+    {label:'Seafood',val:1740,color:'#ff9f00'},{label:'Other food',val:900,color:'#00e5a0'},
+    {label:'Skin contact',val:350,color:'#ff4060'},
+  ],{unit:'particles/week'});
+}
+function renderFoodPanel(){
+  renderHBars('food-bars',[
+    {label:'Shellfish (1 serving)',val:100000,color:'#ff4060'},{label:'Table salt (1kg)',val:212,color:'#ff9f00'},
+    {label:'Beer (1L)',val:32,color:'#ffb300'},{label:'Honey (250g)',val:166,color:'#00e5a0'},
+    {label:'Packaged vegetables',val:85,color:'#00c8ff'},
+  ],{unit:'particles'});
+  renderHBars('water-bars',[
+    {label:'Plastic bottled water',val:94,color:'#ff4060'},{label:'Tap water (unfiltered)',val:4.2,color:'#ff9f00'},
+    {label:'Glass bottled water',val:2.1,color:'#00e5a0'},{label:'Reverse osmosis filtered',val:0.8,color:'#00c8ff'},
+    {label:'Ceramic filtered',val:1.4,color:'#7c9cbf'},
+  ],{unit:'particles/L'});
+}
+function renderSoilPanel(){
+  renderHBars('soil-bars',[
+    {label:'Agricultural fields (biosolids)',val:43000,color:'#ff9f00'},{label:'Roadside soil',val:11000,color:'#ff4060'},
+    {label:'Urban park soil',val:7200,color:'#ffb300'},{label:'Flood plain soil',val:3900,color:'#00c8ff'},
+    {label:'Remote mountain soil',val:550,color:'#00e5a0'},
+  ],{unit:'particles/kg'});
+  renderHBars('soil-source-bars',[
+    {label:'Sewage sludge / biosolids',val:40,color:'#ff9f00'},{label:'Plastic mulch films',val:25,color:'#ff4060'},
+    {label:'Tire rubber runoff',val:18,color:'#7c9cbf'},{label:'Atmospheric deposition',val:12,color:'#00c8ff'},
+    {label:'Irrigation water',val:5,color:'#00e5a0'},
+  ],{unit:'% of total'});
+}
+
+// DATA FILTER
+const allPanels=['all','ocean','air','human','food','soil'];
+function setDataFilter(f,chip){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  allPanels.forEach(p=>{
+    const el=document.getElementById('panel-'+p);
+    if(el) el.classList.toggle('active',p===f);
+  });
+  if(f==='ocean') renderOceanPanel();
+  else if(f==='air') renderAirPanel();
+  else if(f==='human') renderHumanPanel();
+  else if(f==='food') renderFoodPanel();
+  else if(f==='soil') renderSoilPanel();
+}
+
+// ═══════════════════════════════════════
+// INTERACTIVE MAP
+// ═══════════════════════════════════════
+const MAP_POINTS=[
+  {lat:35,lng:135,name:'Pacific Ocean Gyre',index:92,color:'#ff4060',info:'The Great Pacific Garbage Patch contains ~80,000 tonnes of plastic. Microplastic concentration: >8,000 particles/m³.',source:'IUCN, 2021'},
+  {lat:12,lng:120,name:'Southeast Asia Coast',index:88,color:'#ff4060',info:'Philippines, Indonesia, Vietnam, and China account for roughly 60% of ocean plastic leakage globally.',source:'UNEP, 2021'},
+  {lat:0,lng:15,name:'Gulf of Guinea',index:75,color:'#ff9f00',info:'West African coasts have high microplastic loading from urban river runoff and artisanal fishing.',source:'Science of the Total Environment, 2020'},
+  {lat:40,lng:20,name:'Mediterranean Sea',index:70,color:'#ff9f00',info:'The Mediterranean\'s enclosed nature concentrates plastic. Average: 1.25 million particles/km² at surface.',source:'IUCN Mediterranean, 2020'},
+  {lat:55,lng:-5,name:'North Atlantic Gyre',index:55,color:'#ffb300',info:'North Atlantic subtropical gyre accumulates significant microplastic, particularly fibres from European textile washing.',source:'Environmental Science & Technology, 2015'},
+  {lat:-30,lng:-40,name:'South Atlantic Ocean',index:48,color:'#ffb300',info:'Relatively lower pollution but growing rapidly due to increased South American plastic production.',source:'Marine Pollution Bulletin, 2019'},
+  {lat:65,lng:-30,name:'Arctic Ocean',index:44,color:'#7c9cbf',info:'Arctic sea ice traps up to 12,000 microplastic particles per litre. Atmospheric transport carries plastics from distant sources.',source:'Nature Communications, 2017'},
+  {lat:-70,lng:0,name:'Southern Ocean / Antarctica',index:28,color:'#00e5a0',info:'Even remote Antarctic snow contains ~29 microplastic particles per litre — atmospheric deposition from thousands of kilometres away.',source:'Geophysical Research Letters, 2020'},
+  {lat:22,lng:88,name:'Bay of Bengal',index:80,color:'#ff4060',info:'Rivers draining India and Bangladesh carry enormous plastic loads — Ganges alone: ~72,000 tonnes/year to ocean.',source:'Nature Geoscience, 2021'},
+  {lat:51,lng:4,name:'North Sea (Europe)',index:38,color:'#00c8ff',info:'North Sea has improved through EU plastic regulation but still contains 2,000–4,000 particles/m³.',source:'Marine Pollution Bulletin, 2018'},
+  {lat:35,lng:-120,name:'North Pacific Coast (USA)',index:52,color:'#ffb300',info:'California coast shows ~15 microplastic particles per litre in coastal waters. Beach sand averages 2,000 particles/100g.',source:'Environmental Science & Technology, 2013'},
+  {lat:-10,lng:115,name:'Indian Ocean',index:65,color:'#ff9f00',info:'Indian Ocean is the third-largest accumulation zone with a growing garbage patch between Madagascar and Australia.',source:'Journal of Marine Science, 2022'},
+];
+
+let leafletMap=null;
+function initMap(){
+  if(leafletMap) return;
+  leafletMap = L.map('pollution-map').setView([20,0],2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors',maxZoom:10}).addTo(leafletMap);
+  MAP_POINTS.forEach(p=>{
+    const size = 10+p.index/10;
+    const marker = L.circleMarker([p.lat,p.lng],{
+      radius: size, fillColor:p.color, color:'#fff', weight:1.5,
+      opacity:0.9, fillOpacity:0.75
+    }).addTo(leafletMap);
+    marker.bindPopup(`
+      <div style="font-family:IBM Plex Mono,monospace;min-width:200px">
+        <div style="font-size:13px;font-weight:700;color:${p.color};margin-bottom:6px">${p.name}</div>
+        <div style="font-size:11px;margin-bottom:6px">Pollution Index: <strong style="color:${p.color}">${p.index}/100</strong></div>
+        <div style="font-size:11px;line-height:1.6;color:#888;margin-bottom:6px">${p.info}</div>
+        <div style="font-size:10px;color:#666;border-top:1px solid #333;padding-top:4px">📚 ${p.source}</div>
+      </div>
+    `);
+    marker.on('mouseover',()=>marker.openPopup());
+  });
+}
+// Init map when section scrolls into view
+const mapObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ initMap(); mapObs.disconnect(); } });
+},{threshold:0.2});
+mapObs.observe(document.getElementById('map-section'));
+
+// ═══════════════════════════════════════
+// SOURCES SECTION
+// ═══════════════════════════════════════
+const SOURCES=[
+  {icon:'👕',label:'Synthetic Textiles',pct:35,color:'#00c8ff',detail:'Polyester, nylon, and acrylic fibres shed 700,000 microfibres per wash cycle. They pass through wastewater treatment and accumulate in the ocean. Source: IUCN (2017), Ellen MacArthur Foundation.'},
+  {icon:'🚗',label:'Tyre & Road Wear',pct:28,color:'#ff9f00',detail:'Tyre rubber particles are generated by friction with road surfaces. Every vehicle releases ~4–5kg of rubber per year. Urban runoff carries these into waterways. Source: Nordic Council of Ministers (2016).'},
+  {icon:'📦',label:'Single-use Packaging',pct:20,color:'#ff4060',detail:'Plastic packaging (PET, HDPE, LDPE) fragments into microplastics in landfills and the environment. Approximately 141 million tonnes of single-use plastic packaging was produced in 2021. Source: UNEP (2021).'},
+  {icon:'🎣',label:'Fishing Gear',pct:10,color:'#00e5a0',detail:'An estimated 640,000 tonnes of fishing gear is lost or abandoned in the ocean annually. Nets, lines, and traps fragment into microplastics for decades. Source: FAO / IUCN (2016).'},
+  {icon:'🏙️',label:'Urban Dust & Runoff',pct:7,color:'#7c9cbf',detail:'Urban surface runoff carries paint fragments, road markings, and building material plastics. Cities like Mumbai can leach 1,000+ tonnes/year into coastal waters. Source: Science of the Total Environment (2018).'},
+  {icon:'💅',label:'Cosmetics & Care',pct:5,color:'#d580ff',detail:'Microbeads were banned in many countries (US 2015, UK 2018, EU 2020) but persist in legacy products. Natural alternatives: sugar, oat, sea salt. Source: Beat the Microbead / IUCN.'},
+  {icon:'🏗️',label:'Construction & Other',pct:2,color:'#aaaaaa',detail:'Expanded polystyrene from construction beads, plastic pellets (nurdles), paint microfragments, and agricultural films round out the picture. Source: PlasticsEurope (2022).'},
+];
+(function renderSources(){
+  const grid=document.getElementById('source-grid');
+  SOURCES.forEach((s,i)=>{
+    const el=document.createElement('div');el.className='card card-glow source-card';
+    el.innerHTML=`<div style="font-size:36px;margin-bottom:10px">${s.icon}</div><div style="font-weight:600;font-size:15px;margin-bottom:4px">${s.label}</div><div class="mono" style="font-size:11px;color:${s.color};margin-bottom:10px">${s.pct}% OF OCEAN MICROP.</div><div class="progress-bar"><div class="progress-fill" style="width:${s.pct*2}%;background:${s.color}"></div></div>`;
+    el.onclick=()=>revealSource(i,el,s);
+    grid.appendChild(el);
+  });
+})();
+let activeSourceEl=null;
+function revealSource(i,el,s){
+  if(activeSourceEl)activeSourceEl.classList.remove('active');
+  el.classList.add('active');activeSourceEl=el;
+  const d=document.getElementById('source-detail');d.style.display='block';
+  d.innerHTML=`<div style="display:flex;gap:14px;align-items:flex-start"><span style="font-size:40px">${s.icon}</span><div><div class="disp" style="font-size:26px;color:${s.color};margin-bottom:6px">${s.label} — ${s.pct}%</div><p style="color:var(--muted);font-size:14px;line-height:1.8">${s.detail}</p></div></div>`;
+  d.className='card anim';
+}
+
+// ═══════════════════════════════════════
+// CALCULATOR
+// ═══════════════════════════════════════
+const CALC_WEIGHTS={
+  water:{tap:2000,filtered:800,bottled:9000,glass:400,ro:200},
+  seafood:{none:0,low:400,med:1740,high:3000,daily:4200},
+  packaged:{low:300,med:1200,high:3100,vhigh:5000},
+  clothing:{natural:200,mixed:900,synthetic:2800},
+  cosmetics:{none:0,low:400,med:800,high:1600},
+  env:{rural:300,sub:900,urban:2200},
+  cups:{none:0,low:300,high:1200},
+  floor:{natural:200,mixed:600,carpet:1400},
+  purifier:{hepa:-600,basic:-300,none:0}
+};
+const CALC_SUGGESTIONS={
+  water_bottled:{text:'Switch from plastic bottled water to a glass bottle or filtered tap. This one change saves ~7,000+ particles/week.',saving:7000,action:'Switch to glass/filtered water',xp:50},
+  water_tap:{text:'Install a reverse osmosis or ceramic filter on your tap — reduces water-borne microplastics by 60–90%.',saving:1200,action:'Install water filter',xp:40},
+  seafood_high:{text:'Reduce seafood to 1–2×/week. Choose finfish over shellfish (lower plastic load). Saves ~2,500 particles/week.',saving:2500,action:'Reduce seafood intake',xp:35},
+  seafood_daily:{text:'Reducing from daily to weekly seafood cuts ~2,400+ particles/week. Shellfish filter-feed and concentrate microplastics.',saving:2400,action:'Reduce seafood to weekly',xp:40},
+  packaged_high:{text:'Meal prep with fresh whole foods. Avoid heating food in plastic containers — heat accelerates microplastic release. Saves ~1,900 particles/week.',saving:1900,action:'Cook with fresh ingredients',xp:45},
+  packaged_vhigh:{text:'Drastically reducing packaged/processed food consumption is one of the highest-impact changes. Saves 2,000–4,000 particles/week.',saving:3700,action:'Transition to whole foods',xp:60},
+  clothing_synthetic:{text:'Replace synthetic clothing with cotton, linen, or wool. Use a Guppy Friend laundry bag for synthetics — captures up to 86% of shed fibres. Saves ~2,600/week.',saving:2600,action:'Choose natural fibres',xp:35},
+  cosmetics_med:{text:'Check cosmetic ingredients for "polyethylene", "nylon-12", "polypropylene". Switch to natural exfoliants (oat, sugar, sea salt).',saving:400,action:'Switch to natural cosmetics',xp:25},
+  cosmetics_high:{text:'Switching to natural/organic cosmetics removes ~1,600 particles/week. Avoid products with microbeads entirely.',saving:1600,action:'Go natural with cosmetics',xp:35},
+  env_urban:{text:'Use an indoor HEPA air purifier. Urban indoor air has 2–8× more microplastics than outdoor air. Saves ~600/week.',saving:600,action:'Get a HEPA air purifier',xp:30},
+  cups_high:{text:'Use a reusable cup instead of single-use plastic or paper-lined cups. Hot liquid dissolves more plastic. Saves ~1,200/week.',saving:1200,action:'Use reusable cup always',xp:30},
+  floor_carpet:{text:'Replace synthetic carpets with hardwood, tile, or natural-fibre rugs. Synthetic carpets shed fibres into indoor air. Saves ~800/week.',saving:800,action:'Replace synthetic carpet',xp:25},
+  no_purifier:{text:'A HEPA air purifier significantly reduces airborne microplastics in your home — particularly important in urban areas.',saving:600,action:'Get a HEPA air purifier',xp:30},
+};
+function calcUpdate(){
+  const get=id=>document.getElementById(id).value;
+  const total=
+    CALC_WEIGHTS.water[get('c-water')]+
+    CALC_WEIGHTS.seafood[get('c-seafood')]+
+    CALC_WEIGHTS.packaged[get('c-packaged')]+
+    CALC_WEIGHTS.clothing[get('c-clothing')]+
+    CALC_WEIGHTS.cosmetics[get('c-cosmetics')]+
+    CALC_WEIGHTS.env[get('c-env')]+
+    CALC_WEIGHTS.cups[get('c-cups')]+
+    CALC_WEIGHTS.floor[get('c-floor')]+
+    CALC_WEIGHTS.purifier[get('c-purifier')];
+
+  document.getElementById('calc-particles').textContent=Math.max(0,total).toLocaleString();
+  const max=30000,score=Math.round((total/max)*100);
+  document.getElementById('calc-score-bar').style.width=Math.min(Math.max(score,0),100)+'%';
+  document.getElementById('calc-score-bar').style.background=score>66?'linear-gradient(90deg,var(--warn),var(--danger))':score>33?'linear-gradient(90deg,var(--a),var(--warn))':'linear-gradient(90deg,var(--ok),var(--a))';
+  const scoreEl=document.getElementById('calc-score-text');
+  scoreEl.textContent=score+'/100';
+  scoreEl.style.color=score>66?'var(--danger)':score>33?'var(--warn)':'var(--ok)';
+
+  const cats=[
+    {label:'💧 Water',val:CALC_WEIGHTS.water[get('c-water')]},
+    {label:'🐟 Seafood',val:CALC_WEIGHTS.seafood[get('c-seafood')]},
+    {label:'📦 Packaging',val:CALC_WEIGHTS.packaged[get('c-packaged')]},
+    {label:'👕 Clothing',val:CALC_WEIGHTS.clothing[get('c-clothing')]},
+    {label:'💄 Cosmetics',val:CALC_WEIGHTS.cosmetics[get('c-cosmetics')]},
+    {label:'🏙️ Environment',val:CALC_WEIGHTS.env[get('c-env')]},
+    {label:'☕ Cups',val:CALC_WEIGHTS.cups[get('c-cups')]},
+    {label:'🏠 Flooring',val:CALC_WEIGHTS.floor[get('c-floor')]},
+  ];
+  const maxCat=Math.max(...cats.map(c=>c.val))||1;
+  document.getElementById('calc-breakdown').innerHTML=cats.map(c=>`
+    <div style="margin-bottom:6px;text-align:left">
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+        <span style="font-size:11px">${c.label}</span>
+        <span class="mono" style="font-size:10px;color:var(--muted)">${c.val.toLocaleString()}</span>
+      </div>
+      <div class="progress-bar" style="height:5px"><div class="progress-fill" style="width:${(c.val/maxCat)*100}%;background:var(--a)"></div></div>
+    </div>`).join('');
+
+  // Build suggestions
+  const tips=[];
+  if(get('c-water')==='bottled')tips.push(CALC_SUGGESTIONS.water_bottled);
+  else if(get('c-water')==='tap')tips.push(CALC_SUGGESTIONS.water_tap);
+  if(get('c-seafood')==='daily')tips.push(CALC_SUGGESTIONS.seafood_daily);
+  else if(get('c-seafood')==='high')tips.push(CALC_SUGGESTIONS.seafood_high);
+  if(get('c-packaged')==='vhigh')tips.push(CALC_SUGGESTIONS.packaged_vhigh);
+  else if(get('c-packaged')==='high')tips.push(CALC_SUGGESTIONS.packaged_high);
+  if(get('c-clothing')==='synthetic')tips.push(CALC_SUGGESTIONS.clothing_synthetic);
+  if(get('c-cosmetics')==='high')tips.push(CALC_SUGGESTIONS.cosmetics_high);
+  else if(get('c-cosmetics')==='med')tips.push(CALC_SUGGESTIONS.cosmetics_med);
+  if(get('c-env')==='urban')tips.push(CALC_SUGGESTIONS.env_urban);
+  if(get('c-cups')==='high')tips.push(CALC_SUGGESTIONS.cups_high);
+  if(get('c-floor')==='carpet')tips.push(CALC_SUGGESTIONS.floor_carpet);
+  if(get('c-purifier')==='none'&&get('c-env')==='urban')tips.push(CALC_SUGGESTIONS.no_purifier);
+
+  const totalSaving=tips.reduce((s,t)=>s+t.saving,0);
+
+  document.getElementById('calc-tips-card').style.display='block';
+  if(tips.length>0){
+    document.getElementById('calc-tips').innerHTML=tips.map(t=>`
+      <div style="display:flex;gap:10px;margin-bottom:12px;padding:12px;border:1px solid var(--border);border-radius:4px;background:rgba(0,200,255,.04);align-items:flex-start">
+        <span style="color:var(--ok);flex-shrink:0;margin-top:2px">→</span>
+        <div>
+          <div style="font-size:13px;line-height:1.6;margin-bottom:4px">${t.text}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="mono" style="font-size:10px;color:var(--ok)">Saves ~${t.saving.toLocaleString()} particles/week</span>
+            <span class="mono" style="font-size:10px;color:var(--a)">+${t.xp} XP if completed</span>
+          </div>
+        </div>
+      </div>`).join('');
+    document.getElementById('calc-reduction').innerHTML=`
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="disp" style="font-size:36px;color:var(--ok)">-${totalSaving.toLocaleString()}</div>
+        <div>
+          <div style="font-size:13px">particles/week potential reduction</div>
+          <div class="mono" style="font-size:10px;color:var(--muted)">${(totalSaving*52/1000).toFixed(0)}K particles/year · ${((totalSaving/Math.max(total,1))*100).toFixed(0)}% reduction</div>
+        </div>
+      </div>`;
+  } else {
+    document.getElementById('calc-tips').innerHTML='<div style="font-size:13px;color:var(--ok);padding:12px;border:1px solid var(--ok);border-radius:4px;background:rgba(0,229,160,.08)">✓ Your habits are already low-impact! You\'re a plastic-reduction champion. Keep spreading the word and consider advocating for policy change.</div>';
+    document.getElementById('calc-reduction').innerHTML='';
+  }
+  renderComparison(total,get);
+}
+
+// ═══════════════════════════════════════
+// BEFORE vs AFTER
+// ═══════════════════════════════════════
+function renderComparison(before,get){
+  const items=[
+    {label:'Water Source',before:CALC_WEIGHTS.water[get('c-water')],after:CALC_WEIGHTS.water[{tap:'filtered',filtered:'ro',bottled:'filtered',glass:'ro',ro:'ro'}[get('c-water')]||get('c-water')]},
+    {label:'Seafood',before:CALC_WEIGHTS.seafood[get('c-seafood')],after:CALC_WEIGHTS.seafood[{daily:'med',high:'med',med:'low',low:'none',none:'none'}[get('c-seafood')]]},
+    {label:'Packaging',before:CALC_WEIGHTS.packaged[get('c-packaged')],after:CALC_WEIGHTS.packaged[{vhigh:'med',high:'med',med:'low',low:'low'}[get('c-packaged')]]},
+    {label:'Clothing',before:CALC_WEIGHTS.clothing[get('c-clothing')],after:CALC_WEIGHTS.clothing[{synthetic:'mixed',mixed:'natural',natural:'natural'}[get('c-clothing')]]},
+  ];
+  const maxVal=Math.max(...items.flatMap(i=>[i.before,i.after]))||1;
+  document.getElementById('compare-bars').innerHTML=items.map(it=>`
+    <div style="margin-bottom:16px">
+      <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:.08em">${it.label.toUpperCase()}</div>
+      <div class="before-after-bar">
+        <div class="bar-before" style="width:${(it.before/maxVal)*100}%">${it.before>0?it.before.toLocaleString():''}</div>
+        <div class="bar-after" style="width:${(it.after/maxVal)*100}%">${it.after>0?it.after.toLocaleString():''}</div>
+      </div>
+    </div>`).join('');
+  const afterTotal=items.reduce((s,i)=>s+i.after,0)+(before-items.reduce((s,i)=>s+i.before,0));
+  const saved=before-afterTotal;
+  const pct=before>0?Math.round((saved/before)*100):0;
+  const sum=document.getElementById('compare-summary');
+  sum.style.display='block';
+  sum.innerHTML=`<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center"><span style="font-size:32px">📉</span><div><div class="disp" style="font-size:28px;color:var(--ok)">-${pct}% reduction possible</div><div style="font-size:13px;color:var(--muted);margin-top:4px">These changes could save ~${saved.toLocaleString()} particles/week — <strong style="color:var(--a)">${(saved*52/1000).toFixed(0)}K particles/year</strong> less entering your body.</div></div></div>`;
+}
+
+// ═══════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════
+const QUIZ=[
+  {q:'How many grams of plastic does the average person consume per week?',opts:['~1g','~5g','~15g','~50g'],ans:1,exp:'Research by WWF/University of Newcastle (2019) estimated ~5g/week — equivalent to a credit card\'s worth of plastic.'},
+  {q:'What percentage of all plastic ever produced has been recycled?',opts:['Less than 10%','Around 25%','About 40%','Over 50%'],ans:0,exp:'Only 9% of the ~9.2 billion tonnes of plastic ever produced has been recycled. 12% was incinerated; the rest ended in landfills or the environment. (Geyer et al., Science Advances 2017)'},
+  {q:'Which is the single largest source of ocean microplastics?',opts:['Plastic bottles','Fishing gear','Synthetic textiles','Straws and cutlery'],ans:2,exp:'Synthetic textiles (polyester, nylon, acrylic) account for ~35% of ocean microplastics through fibre shedding during washing. (IUCN Primary Microplastics Report, 2017)'},
+  {q:'In which human organ were microplastics NOT found as of 2024?',opts:['Lungs','Blood','Kidneys','None — found in all'],ans:3,exp:'Microplastics have been confirmed in blood, lungs, liver, kidney, placenta, testes, and even brain tissue. No organ has been confirmed free of them.'},
+  {q:'How long does it take a plastic bottle to fully break down in the ocean?',opts:['10–20 years','50–100 years','200–450 years','Over 1,000 years'],ans:2,exp:'PET plastic bottles take an estimated 200–450 years to fully degrade in marine environments.'},
+  {q:'What is the size threshold that defines microplastics?',opts:['Less than 1mm','Less than 5mm','Less than 10mm','Less than 1cm'],ans:1,exp:'By international scientific consensus, microplastics are plastic particles smaller than 5mm. Nanoplastics are a subset, smaller than 1 micron.'},
+  {q:'What percentage of mesopelagic (mid-water) fish contain microplastics?',opts:['About 20%','Around 40%','Close to 73%','Over 90%'],ans:2,exp:'73% of mesopelagic fish in the North Atlantic contained microplastics in stomachs — making them a key vector for plastic entering the human food chain. (Environ. Sci. & Tech., 2018)'},
+  {q:'How many microplastic fibres can one wash of a synthetic fleece release?',opts:['~1,000','~50,000','~250,000','~700,000'],ans:3,exp:'Studies found a single wash of a synthetic fleece jacket can release up to 700,000 fibres into wastewater. Many pass straight through treatment plants. (Environmental Science & Technology, 2016)'},
+  {q:'Where was the highest concentration of microplastics in drinking water found?',opts:['Tap water','Filtered water','Plastic bottled water','Glass bottled water'],ans:2,exp:'Orb Media\'s 2018 study tested 11 bottled water brands and found 93% showed signs of microplastic contamination — up to 94 particles per litre.'},
+  {q:'What percentage of ocean plastic waste comes from just 10 river systems?',opts:['Around 10%','About 30%','Close to 50%','Over 75%'],ans:3,exp:'Research published in Environmental Science & Technology (2017) found that just 10 rivers — 8 in Asia, 2 in Africa — carry 90–95% of all riverine plastic to the ocean.'},
+];
+let qIndex=0,qScore=0,qAnswered=false,questionsAnswered=new Set();
+function updateQuizSlider(){
+  document.getElementById('quiz-slider').value=qIndex;
+  document.getElementById('quiz-slider-val').textContent=(qIndex+1)+' / '+QUIZ.length;
+}
+function jumpQuiz(i){
+  qIndex=i;qAnswered=false;updateQuizSlider();renderQuiz();
+}
+function renderQuiz(){
+  updateQuizSlider();
+  const box=document.getElementById('quiz-box');
+  if(qIndex>=QUIZ.length){
+    const pct=Math.round((qScore/QUIZ.length)*100);
+    let grade,msg,emoji;
+    if(pct>=90){grade='🏆 Expert!';msg='Outstanding! You know microplastics better than most environmental scientists. Share your knowledge!';}
+    else if(pct>=70){grade='🥇 Advanced';msg='Excellent work! You have a strong understanding of the microplastic crisis. A few more resources and you\'ll be an expert.';}
+    else if(pct>=50){grade='🥈 Intermediate';msg='Good effort! You understand the basics but there\'s more to learn. Revisit the Data and Tips sections above.';}
+    else if(pct>=30){grade='🥉 Beginner';msg='You\'re starting your journey! Explore the full site to deepen your knowledge of the plastic crisis.';}
+    else{grade='📚 Learning';msg='Keep studying! The more you know, the more impact you can have. Try the quiz again after reading through the site.';}
+    box.innerHTML=`<div style="text-align:center;padding:20px">
+      <div style="font-size:56px;margin-bottom:12px">${grade.split(' ')[0]}</div>
+      <div class="disp" style="font-size:52px;color:var(--a)">${qScore}/${QUIZ.length}</div>
+      <div class="mono" style="font-size:14px;color:var(--muted);margin:4px 0">${pct}% correct</div>
+      <div class="progress-bar" style="margin:16px 0"><div class="progress-fill" style="width:${pct}%;background:${pct>=70?'var(--ok)':pct>=40?'var(--a)':'var(--warn)'}"></div></div>
+      <div style="font-weight:600;font-size:18px;margin-bottom:8px">${grade}</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto 24px">${msg}</div>
+      ${pct>=70?`<div style="margin-bottom:16px;padding:12px;background:rgba(0,229,160,.1);border:1px solid var(--ok);border-radius:4px;font-size:13px">🎉 You earned <strong style="color:var(--a)">+${pct>=90?100:pct>=70?60:30} XP</strong> for this quiz result!</div>`:''}
+      <button class="btn btn-a" onclick="qIndex=0;qScore=0;qAnswered=false;questionsAnswered=new Set();renderQuiz()">Retake Quiz →</button>
+    </div>`;
+    if(currentUser&&pct>=70){
+      const xpEarned=pct>=90?100:pct>=70?60:30;
+      addXP(xpEarned,'Quiz completed!');
+    }
+    return;
+  }
+  const q=QUIZ[qIndex];
+  const alreadyAnswered=questionsAnswered.has(qIndex);
+  box.innerHTML=`
+    <div style="margin-bottom:4px;display:flex;justify-content:space-between;align-items:center">
+      <span class="mono" style="font-size:10px;color:var(--muted)">QUESTION ${qIndex+1} of ${QUIZ.length}</span>
+      <span class="mono" style="font-size:10px;color:var(--a)">Score: ${qScore}</span>
+    </div>
+    <div class="progress-bar" style="margin-bottom:20px"><div class="progress-fill" style="width:${(qIndex/QUIZ.length)*100}%;background:var(--a)"></div></div>
+    <div style="font-size:16px;font-weight:600;line-height:1.6;margin-bottom:20px">${q.q}</div>
+    <div id="quiz-opts">${q.opts.map((o,i)=>`<div class="quiz-opt" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</div>`).join('')}</div>
+    <div id="quiz-feedback" style="display:none;margin-top:16px;padding:14px;border-radius:4px;font-size:13px;line-height:1.7"></div>
+    <div id="quiz-next" style="display:none;margin-top:14px;gap:10px;flex-wrap:wrap">
+      ${qIndex>0?`<button class="btn btn-ghost" onclick="qIndex--;qAnswered=false;renderQuiz()">← Prev</button>`:''}
+      <button class="btn btn-a" onclick="qIndex++;qAnswered=false;renderQuiz()">${qIndex+1<QUIZ.length?'Next →':'See Results →'}</button>
+    </div>`;
+}
+function answerQuiz(i){
+  if(qAnswered)return;
+  qAnswered=true;
+  const q=QUIZ[qIndex];
+  const wasAnswered=questionsAnswered.has(qIndex);
+  questionsAnswered.add(qIndex);
+  const opts=document.querySelectorAll('.quiz-opt');
+  opts.forEach((o,idx)=>{
+    if(idx===q.ans) o.classList.add('correct');
+    else if(idx===i && i!==q.ans) o.classList.add('wrong');
+  });
+  const isCorrect=i===q.ans;
+  if(isCorrect&&!wasAnswered)qScore++;
+  const fb=document.getElementById('quiz-feedback');
+  fb.style.display='block';
+  fb.style.background=isCorrect?'rgba(0,229,160,.1)':'rgba(255,64,96,.08)';
+  fb.style.borderLeft=`3px solid ${isCorrect?'var(--ok)':'var(--danger)'}`;
+  fb.innerHTML=`<strong style="color:${isCorrect?'var(--ok)':'var(--danger)'}">${isCorrect?'✓ Correct!':'✗ Incorrect.'}</strong> ${q.exp}`;
+  document.getElementById('quiz-next').style.display='flex';
+}
+
+// ═══════════════════════════════════════
+// TIPS
+// ═══════════════════════════════════════
+const TIPS=[
+  {icon:'💧',title:'Use a reusable water bottle',impact:'High',saving:7000,desc:'Switching from plastic bottled water to glass or stainless steel eliminates ~9,000 particles/week. Use filtered tap water or install a reverse osmosis system at home.'},
+  {icon:'👕',title:'Choose natural fibres',impact:'High',saving:2600,desc:'Cotton, linen, hemp, and wool shed no synthetic particles. When washing synthetics, use a Guppy Friend bag which captures up to 86% of released fibres.'},
+  {icon:'📦',title:'Reduce packaged food',impact:'Medium',saving:1900,desc:'Shop at bulk stores with your own containers. Favour fresh produce over cling-wrapped items. Avoid heating food in plastic containers — heat accelerates microplastic release.'},
+  {icon:'🎣',title:'Reduce shellfish intake',impact:'Medium',saving:1340,desc:'Shellfish filter-feed and concentrate microplastics. One serving can contain 1,740–100,000 particles. Reducing to once a week cuts significant exposure.'},
+  {icon:'💅',title:'Switch to natural cosmetics',impact:'Medium',saving:800,desc:'Check ingredients for "polyethylene", "nylon-12", "polypropylene" — these are plastic microbeads. Natural exfoliants include sugar, oat, and sea salt.'},
+  {icon:'🏠',title:'Improve indoor air quality',impact:'Medium',saving:600,desc:'Indoor air can contain more microplastics than outdoor air. Use a HEPA air purifier, vacuum regularly with a HEPA vacuum, and avoid synthetic carpets and rugs.'},
+  {icon:'♻️',title:'Refuse single-use plastic',impact:'High',saving:0,desc:'Every piece of plastic you prevent from entering the waste stream prevents future microplastic generation. Carry reusable bags, say no to plastic straws and cutlery.'},
+  {icon:'🌿',title:'Support policy change',impact:'Very High',saving:0,desc:'Individual action is necessary but insufficient. Advocate for plastic production caps, extended producer responsibility laws, and better waste management infrastructure.'},
+  {icon:'🔬',title:'Stay informed',impact:'Ongoing',saving:0,desc:'Microplastic science evolves rapidly. Follow WHO, UNEP, and peer-reviewed sources. Be skeptical of "plastic-free" marketing — verify claims with ingredients lists.'},
+];
+(function renderTips(){
+  const grid=document.getElementById('tips-grid');
+  const impactColor={High:'var(--ok)',Medium:'var(--a)',Low:'var(--muted)','Very High':'#ff9f00',Ongoing:'#d580ff'};
+  TIPS.forEach(t=>{
+    const el=document.createElement('div');el.className='card card-glow';el.style.transition='all .25s';
+    el.innerHTML=`<div style="font-size:36px;margin-bottom:10px">${t.icon}</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div style="font-weight:600;font-size:15px">${t.title}</div>
+        <span class="mono" style="font-size:9px;color:${impactColor[t.impact]||'var(--a)'};border:1px solid ${impactColor[t.impact]||'var(--a)'};padding:2px 7px;border-radius:2px;white-space:nowrap;flex-shrink:0;margin-left:8px">${t.impact}</span>
+      </div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7">${t.desc}</p>
+      ${t.saving>0?`<div class="mono" style="font-size:10px;color:var(--ok);margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">Saves ~${t.saving.toLocaleString()} particles/week</div>`:''}`;
+    grid.appendChild(el);
+  });
+})();
+
+// ═══════════════════════════════════════
+// REWARDS SYSTEM
+// ═══════════════════════════════════════
+const LEVEL_TITLES=['Plastic Trainee','Eco Starter','Green Warrior','Plastic Fighter','Ocean Guardian','Microplastic Buster','Eco Champion','Plastic Slayer','Marine Hero','Earth Defender'];
+const LEVEL_XP=[0,200,450,800,1200,1700,2300,3000,3800,4700];
+
+const DAILY_QUESTS_POOL=[
+  {id:'d_water',title:'Drink from Reusable Bottle',desc:'Use only a reusable bottle for all drinks today',icon:'💧',xp:30,coins:10,target:1,type:'pledge'},
+  {id:'d_walk',title:'Skip the Plastic Bag',desc:'Refuse any plastic bag when shopping today',icon:'🛍️',xp:25,coins:8,target:1,type:'pledge'},
+  {id:'d_seafood',title:'Seafood-free Day',desc:'Avoid all seafood for one day',icon:'🐟',xp:20,coins:7,target:1,type:'pledge'},
+  {id:'d_quiz',title:'Daily Knowledge Check',desc:'Answer at least 5 quiz questions',icon:'🧠',xp:35,coins:12,target:5,type:'quiz'},
+  {id:'d_cosmetic',title:'Check Your Cosmetics',desc:'Check the ingredients of 2 personal care products for microplastics',icon:'💅',xp:20,coins:6,target:2,type:'log'},
+  {id:'d_plastic_free',title:'Plastic-free Lunch',desc:'Have a lunch with no plastic packaging',icon:'🥗',xp:30,coins:10,target:1,type:'pledge'},
+  {id:'d_share',title:'Share the Knowledge',desc:'Tell one person a fact about microplastics today',icon:'📢',xp:15,coins:5,target:1,type:'pledge'},
+  {id:'d_filter',title:'Use Filtered Water',desc:'Drink only filtered or tap-in-glass water today',icon:'🔬',xp:25,coins:8,target:1,type:'pledge'},
+];
+const WEEKLY_QUESTS_POOL=[
+  {id:'w_bottle',title:'Glass Only Week',desc:'Drink exclusively from glass or reusable containers for 7 days',icon:'🫙',xp:120,coins:60,reward:'eco5',target:7,type:'streak'},
+  {id:'w_natural',title:'Natural Fibre Week',desc:'Wear only natural fibre clothing for the week',icon:'🧶',xp:100,coins:50,target:7,type:'streak'},
+  {id:'w_quiz',title:'Quiz Master',desc:'Complete all 10 quiz questions with 70%+ score',icon:'🏆',xp:150,coins:75,target:10,type:'quiz'},
+  {id:'w_calc',title:'Impact Calculator Pro',desc:'Use the calculator and save 3 specific action plans',icon:'📊',xp:80,coins:40,target:3,type:'log'},
+  {id:'w_noplastic',title:'Zero Single-Use Week',desc:'Refuse all single-use plastics for 7 consecutive days',icon:'♻️',xp:200,coins:100,reward:'amazon10',target:7,type:'streak'},
+  {id:'w_hepa',title:'Air Quality Guardian',desc:'Research and identify a HEPA purifier for your home',icon:'🌬️',xp:60,coins:30,target:1,type:'research'},
+];
+const REWARD_STORE=[
+  {id:'eco5',title:'EcoStore $5 Coupon',icon:'🌱',cost:50,code:'ECO5-MICRO-2026',desc:'$5 off natural personal care products at EcoStore.com',category:'coupon'},
+  {id:'amazon10',title:'Amazon $10 Gift Card',icon:'🎁',cost:100,code:'AMZ-MICRO-'+Math.random().toString(36).substr(2,8).toUpperCase(),desc:'$10 Amazon Gift Card redeemable for eco-friendly products',category:'giftcard'},
+  {id:'guppy',title:'Guppy Friend Discount',icon:'🐟',cost:60,code:'GUPPY-MICRO15',desc:'15% off Guppy Friend laundry bags (stops microfibre pollution)',category:'coupon'},
+  {id:'nalgene',title:'Nalgene Bottle 20% Off',icon:'💧',cost:45,code:'NALG-ECO-20',desc:'20% discount on Nalgene reusable water bottles',category:'coupon'},
+  {id:'amazon25',title:'Amazon $25 Gift Card',icon:'🏆',cost:250,code:'AMZ25-MICRO-'+Math.random().toString(36).substr(2,8).toUpperCase(),desc:'$25 Amazon Gift Card — reward for committed eco-warriors',category:'giftcard'},
+  {id:'badge_gold',title:'Gold Eco Warrior Badge',icon:'🥇',cost:30,code:'BADGE_GOLD',desc:'Exclusive digital Gold Eco Warrior badge for your profile',category:'badge'},
+];
+
+function todayKey(){ return new Date().toISOString().split('T')[0]; }
+function weekKey(){
+  const d=new Date();const day=d.getDay()||7;
+  d.setDate(d.getDate()-day+1);return d.toISOString().split('T')[0];
+}
+
+function getDailyQuests(){
+  const seed=todayKey().split('-').reduce((a,b)=>a+parseInt(b),0);
+  const pool=[...DAILY_QUESTS_POOL];
+  const selected=[];
+  for(let i=0;i<4;i++){
+    const idx=(seed+i*7)%pool.length;
+    selected.push({...pool[idx],progress:0,completed:false,claimed:false});
+  }
+  return selected;
+}
+function getWeeklyQuests(){
+  const seed=weekKey().split('-').reduce((a,b)=>a+parseInt(b),0);
+  const pool=[...WEEKLY_QUESTS_POOL];
+  const selected=[];
+  for(let i=0;i<3;i++){
+    const idx=(seed+i*5)%pool.length;
+    selected.push({...pool[idx],progress:0,completed:false,claimed:false});
+  }
+  return selected;
+}
+
+function checkQuestResets(){
+  if(!currentUser)return;
+  const today=todayKey(),week=weekKey();
+  if(currentUser.dailyReset!==today){
+    currentUser.dailyQuestState=null;currentUser.dailyReset=today;
+  }
+  if(currentUser.weeklyReset!==week){
+    currentUser.weeklyQuestState=null;currentUser.weeklyReset=week;
+  }
+  if(!currentUser.dailyQuestState)currentUser.dailyQuestState=getDailyQuests();
+  if(!currentUser.weeklyQuestState)currentUser.weeklyQuestState=getWeeklyQuests();
+  saveCurrentUser();
+}
+
+function renderUserStats(){
+  if(!currentUser)return;
+  const xp=currentUser.xp||0;
+  const level=getLevel(xp);
+  const nextXP=LEVEL_XP[Math.min(level,LEVEL_XP.length-1)]||5000;
+  const prevXP=LEVEL_XP[Math.max(level-1,0)];
+  const pct=Math.min(((xp-prevXP)/(nextXP-prevXP))*100,100);
+  document.getElementById('user-level').textContent=level;
+  document.getElementById('user-name-display').textContent=currentUser.name;
+  document.getElementById('user-title-display').textContent=LEVEL_TITLES[Math.min(level-1,LEVEL_TITLES.length-1)];
+  document.getElementById('user-xp-display').textContent=`${xp} / ${nextXP} XP`;
+  document.getElementById('user-xp-bar').style.width=pct+'%';
+  document.getElementById('user-streak').textContent=currentUser.streak||0;
+  document.getElementById('user-coins').textContent=currentUser.coins||0;
+  document.getElementById('user-quests-done').textContent=currentUser.questsDone||0;
+}
+function getLevel(xp){
+  let l=1;
+  for(let i=1;i<LEVEL_XP.length;i++){ if(xp>=LEVEL_XP[i])l=i+1; }
+  return l;
+}
+function addXP(amount,reason=''){
+  if(!currentUser)return;
+  currentUser.xp=(currentUser.xp||0)+amount;
+  currentUser.coins=(currentUser.coins||0)+Math.floor(amount/5);
+  saveCurrentUser();
+  renderUserStats();
+  if(reason) showToast(`+${amount} XP — ${reason}`,'ok');
+}
+
+function renderQuests(){
+  if(!currentUser)return;
+  const daily=currentUser.dailyQuestState||[];
+  const weekly=currentUser.weeklyQuestState||[];
+  const dg=document.getElementById('daily-quests');
+  const wg=document.getElementById('weekly-quests');
+  dg.innerHTML='';wg.innerHTML='';
+  daily.forEach((q,i)=>dg.appendChild(buildQuestCard(q,i,'daily')));
+  weekly.forEach((q,i)=>wg.appendChild(buildQuestCard(q,i,'weekly')));
+  updateQuestTimers();
+}
+
+function buildQuestCard(q,idx,type){
+  const el=document.createElement('div');
+  el.className='quest-card'+(q.completed?' completed':'')+(q.claimed?' claimed':'');
+  const pct=q.target>1?Math.min((q.progress/q.target)*100,100):(q.completed?100:0);
+  el.innerHTML=`
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <span style="font-size:24px;flex-shrink:0">${q.icon}</span>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:14px;margin-bottom:2px">${q.title}</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:8px">${q.desc}</div>
+        <div style="display:flex;gap:10px;margin-bottom:8px">
+          <span class="mono" style="font-size:10px;color:var(--a)">+${q.xp} XP</span>
+          <span class="mono" style="font-size:10px;color:var(--gold)">🪙 ${q.coins}</span>
+          ${q.target>1?`<span class="mono" style="font-size:10px;color:var(--muted)">${q.progress}/${q.target}</span>`:''}
+        </div>
+        ${q.target>1?`<div class="quest-progress"><div class="quest-progress-fill" style="width:${pct}%;background:${type==='weekly'?'var(--purple)':'var(--a)'}"></div></div>`:''}
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+          ${!q.completed?`<button class="btn btn-ghost" style="padding:6px 12px;font-size:10px" onclick="progressQuest('${type}',${idx},this)">
+            ${q.type==='pledge'?'Mark Done ✓':q.type==='log'?'Log Action':q.type==='quiz'?'Go to Quiz':'Progress +1'}
+          </button>`:''}
+          ${q.completed&&!q.claimed?`<button class="btn btn-gold" style="padding:6px 12px;font-size:10px;animation:rewardBounce 1s ease infinite" onclick="claimQuestReward('${type}',${idx})">
+            🎁 Claim Reward!
+          </button>`:''}
+          ${q.claimed?`<span class="mono" style="font-size:10px;color:var(--ok)">✓ Reward Claimed</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  return el;
+}
+
+function progressQuest(type,idx,btn){
+  if(!currentUser)return;
+  const quests=type==='daily'?currentUser.dailyQuestState:currentUser.weeklyQuestState;
+  const q=quests[idx];
+  if(q.completed)return;
+  if(q.type==='quiz'){
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+    q.progress=Math.min(q.progress+1,q.target);
+  } else {
+    q.progress=Math.min((q.progress||0)+1,q.target);
+  }
+  if(q.progress>=q.target) q.completed=true;
+  saveCurrentUser();
+  renderQuests();
+  if(q.completed) showToast(`Quest complete: ${q.title}! Claim your reward 🎁`,'ok');
+}
+
+function claimQuestReward(type,idx){
+  if(!currentUser)return;
+  const quests=type==='daily'?currentUser.dailyQuestState:currentUser.weeklyQuestState;
+  const q=quests[idx];
+  if(!q.completed||q.claimed)return;
+  q.claimed=true;
+  addXP(q.xp,'Quest reward');
+  currentUser.coins=(currentUser.coins||0)+q.coins;
+  currentUser.questsDone=(currentUser.questsDone||0)+1;
+  saveCurrentUser();
+  renderQuests();
+  showToast(`🎉 +${q.xp} XP and 🪙 ${q.coins} eco-coins earned!`,'ok');
+}
+
+function renderRewardStore(){
+  const grid=document.getElementById('reward-store');
+  grid.innerHTML='';
+  REWARD_STORE.forEach(r=>{
+    const el=document.createElement('div');
+    el.className='card';
+    const canAfford=(currentUser?.coins||0)>=r.cost;
+    el.innerHTML=`
+      <div style="font-size:36px;margin-bottom:10px">${r.icon}</div>
+      <div style="font-weight:600;font-size:14px;margin-bottom:4px">${r.title}</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px">${r.desc}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <span class="mono" style="font-size:12px;color:var(--gold)">🪙 ${r.cost} coins</span>
+        <span class="mono" style="font-size:10px;color:var(--muted)">${r.category}</span>
+      </div>
+      <button class="btn ${canAfford?'btn-gold':'btn-ghost'}" style="width:100%;justify-content:center;font-size:11px;padding:8px"
+        onclick="redeemReward('${r.id}')" ${canAfford?'':''}>
+        ${canAfford?'Redeem Now':'Need 🪙 '+r.cost+' coins'}
+      </button>`;
+    grid.appendChild(el);
+  });
+}
+
+function redeemReward(id){
+  if(!currentUser){showToast('Sign in to redeem rewards','error');return;}
+  const r=REWARD_STORE.find(x=>x.id===id);
+  if(!r)return;
+  if((currentUser.coins||0)<r.cost){showToast('Not enough eco-coins!','error');return;}
+  currentUser.coins=(currentUser.coins||0)-r.cost;
+  currentUser.claimedRewards=currentUser.claimedRewards||[];
+  currentUser.claimedRewards.push({id,date:new Date().toISOString(),code:r.code});
+  saveCurrentUser();
+  renderUserStats();
+  renderRewardStore();
+  document.getElementById('claim-icon').textContent=r.icon;
+  document.getElementById('claim-title').textContent='Reward Claimed!';
+  document.getElementById('claim-desc').textContent=r.desc;
+  document.getElementById('claim-code').textContent=r.code;
+  document.getElementById('claim-modal').classList.add('open');
+}
+
+function updateQuestTimers(){
+  function pad(n){return n.toString().padStart(2,'0');}
+  function countdown(targetDate){
+    const now=new Date(),target=new Date(targetDate);
+    const diff=Math.max(0,target-now);
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+  function nextMidnight(){ const t=new Date();t.setHours(24,0,0,0);return t; }
+  function nextMonday(){ const t=new Date();const day=t.getDay()||7;t.setDate(t.getDate()+(8-day));t.setHours(0,0,0,0);return t; }
+  setInterval(()=>{
+    const de=document.getElementById('daily-timer');
+    const we=document.getElementById('weekly-timer');
+    if(de)de.textContent=countdown(nextMidnight());
+    if(we)we.textContent=countdown(nextMonday());
+  },1000);
+}
+
+// ═══════════════════════════════════════
+// FOOTER SOURCES
+// ═══════════════════════════════════════
+const FOOTER_SOURCES=[
+  {name:'IUCN — Primary Microplastics in Oceans',url:'https://www.iucn.org/resources/issues-brief/marine-plastic-pollution'},
+  {name:'UNEP — Microplastics from Textiles',url:'https://www.unep.org/resources/report/microplastics-textiles'},
+  {name:'WHO — Microplastics in Drinking-Water',url:'https://www.who.int/publications/i/item/9789241516198'},
+  {name:'WWF / Univ. Newcastle — 5g/week study',url:'https://wwf.panda.org/wwf_news/?348337/New-Report-Reveals-People-Eating-5-Grams-of-Plastic-a-Week'},
+  {name:'Science Advances — Global Plastic Production',url:'https://www.science.org/doi/10.1126/sciadv.1700782'},
+  {name:'Environ. Sci. & Tech. — Microfibre Shedding',url:'https://pubs.acs.org/doi/10.1021/acs.est.6b03504'},
+  {name:'Nature Comms. — Arctic Microplastics',url:'https://www.nature.com/articles/ncomms14350'},
+  {name:'Environment International — Placenta Study',url:'https://www.sciencedirect.com/science/article/pii/S0160412020322297'},
+  {name:'PlasticsEurope — Plastics the Facts',url:'https://plasticseurope.org/knowledge-hub/plastics-the-facts-2022/'},
+  {name:'FAO — Ghost Fishing Gear',url:'https://www.fao.org/3/i7692e/i7692e.pdf'},
+  {name:'Science of the Total Env. — Testes Study',url:'https://www.sciencedirect.com/science/article/pii/S0048969723021435'},
+  {name:'NOAA — Marine Debris Program',url:'https://marinedebris.noaa.gov/'},
+];
+(function renderFooterSources(){
+  const el=document.getElementById('footer-sources');
+  FOOTER_SOURCES.forEach(s=>{
+    const div=document.createElement('a');
+    div.href=s.url;div.target='_blank';div.rel='noopener noreferrer';
+    div.style.cssText='display:flex;align-items:flex-start;gap:8px;padding:12px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--muted);font-size:12px;line-height:1.5;transition:all .2s;';
+    div.innerHTML=`<span style="color:var(--a);flex-shrink:0">📚</span>${s.name}`;
+    div.addEventListener('mouseenter',()=>{div.style.borderColor='var(--a)';div.style.color='var(--a)';});
+    div.addEventListener('mouseleave',()=>{div.style.borderColor='var(--border)';div.style.color='var(--muted)';});
+    el.appendChild(div);
+  });
+})();
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+renderBarChart();
+renderDonut();
+renderConcBars();
+renderRegionBars();
+calcUpdate();
+renderQuiz();
+
+// ════════════════════════════════════════════════════════
+// UTILITY HELPERS
+// ════════════════════════════════════════════════════════
+function xH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function getAvaEl(u,sz){
+  sz=sz||40;
+  if(u&&u.avatar)return'<img src="'+u.avatar+'" style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;object-fit:cover;display:block;">';
+  var e=['🌊','🔬','🌿','♻️','🐋','🐠','🦈','🌱','💧','🌍'];
+  return e[(u?u.name.charCodeAt(0)%e.length:0)];
+}
+function lvlInfo(xp){
+  var n=['Plastic Novice','Eco Starter','Green Guardian','Ocean Defender','Plastic Fighter','Micro Hunter','Eco Champion','Earth Warrior','Marine Hero','Planet Protector'];
+  var t=[0,100,250,500,900,1400,2000,2800,3800,5000];
+  var i=0;for(var j=0;j<t.length;j++){if(xp>=t[j])i=j;else break;}
+  return{num:i+1,name:n[i]};
+}
+
+// ════════════════════════════════════════════════════════
+// SIGN OUT FULL
+// ════════════════════════════════════════════════════════
+
+function doSignOutFull(){
+  signOut();
+  closeM('profile-modal');
+  renderLeaderboard();
+  if(window._firebaseSignOut) window._firebaseSignOut();
+}
+
+// ════════════════════════════════════════════════════════
+// AVATAR
+// ════════════════════════════════════════════════════════
+function handleAvaUpload(ev){
+  var f=ev.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(e){
+    if(currentUser){currentUser.avatar=e.target.result;saveCurrentUser();}
+    refreshPmAva();renderLeaderboard();
+    showToast('Profile picture updated 📸','ok');
+  };
+  r.readAsDataURL(f);
+}
+function refreshPmAva(){
+  var el=document.getElementById('pm-ava');if(!el)return;
+  if(currentUser&&currentUser.avatar)
+    el.innerHTML='<img src="'+currentUser.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+  else el.innerHTML='🌊';
+}
+
+// ════════════════════════════════════════════════════════
+// PROFILE MODAL
+// ════════════════════════════════════════════════════════
+function openProfileModal(){
+  if(!currentUser){window.location.href='index.html';return;}
+  var u=currentUser,info=lvlInfo(u.xp||0);
+  document.getElementById('pm-name').textContent=u.name;
+  document.getElementById('pm-lvl').textContent='Level '+info.num+' — '+info.name;
+  document.getElementById('pm-email').textContent=u.email;
+  document.getElementById('pm-xp').textContent=(u.xp||0).toLocaleString();
+  document.getElementById('pm-qd').textContent=u.questsDone||0;
+  document.getElementById('pm-rc').textContent=(u.claimedRewards||[]).length;
+  document.getElementById('pm-name-inp').value=u.name;
+  refreshPmAva();openM('profile-modal');
+}
+function saveProfileName(){
+  if(!currentUser)return;
+  var n=document.getElementById('pm-name-inp').value.trim();
+  if(!n){showToast('Name cannot be empty','error');return;}
+  currentUser.name=n;saveCurrentUser();
+  document.getElementById('pm-name').textContent=n;
+  document.getElementById('auth-btn').textContent=n.split(' ')[0]+' ▾';
+  renderLeaderboard();showToast('Profile saved ✓','ok');
+}
+
+// ════════════════════════════════════════════════════════
+// INSPECT USER
+// ════════════════════════════════════════════════════════
+function inspectUser(email){
+  var u=getUsers()[email];if(!u||u.isAdmin)return;
+  var info=lvlInfo(u.xp||0);
+  var ae=document.getElementById('ins-ava');
+  ae.innerHTML=u.avatar?'<img src="'+u.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">':getAvaEl(u,96);
+  document.getElementById('ins-name').textContent=u.name;
+  document.getElementById('ins-lvl').textContent='Level '+info.num+' — '+info.name;
+  document.getElementById('ins-joined').textContent='Joined '+(u.joined?new Date(u.joined).toLocaleDateString():'recently');
+  document.getElementById('ins-xp').textContent=(u.xp||0).toLocaleString();
+  document.getElementById('ins-qd').textContent=u.questsDone||0;
+  document.getElementById('ins-rc').textContent=(u.claimedRewards||[]).length;
+  var qp=document.getElementById('ins-quiz');
+  if(u.quizBest!=null){
+    var pct=Math.round((u.quizBest/10)*100);
+    var col=pct>=70?'var(--ok)':pct>=40?'var(--a)':'var(--warn)';
+    qp.innerHTML='<div style="display:flex;align-items:center;gap:14px;"><div class="disp" style="font-size:28px;color:'+col+';">'+u.quizBest+'/10</div><div style="flex:1;"><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:'+col+';"></div></div><div class="mono" style="font-size:10px;color:var(--muted);margin-top:3px;">'+pct+'% — '+(pct>=70?'Strong':'Keep going')+'</div></div></div>';
+  }else{qp.innerHTML='<div style="font-size:13px;color:var(--muted);">No quiz attempts yet.</div>';}
+  var badges=[];
+  if((u.xp||0)>=100)badges.push('🌿 Eco Starter');
+  if((u.xp||0)>=500)badges.push('🌊 Ocean Defender');
+  if((u.xp||0)>=1000)badges.push('⚡ Eco Champion');
+  if((u.questsDone||0)>=3)badges.push('🎯 Quest Hunter');
+  if((u.claimedRewards||[]).length>=1)badges.push('🎁 Redeemer');
+  if(u.quizBest>=8)badges.push('🏆 Quiz Master');
+  if((u.streak||0)>=3)badges.push('🔥 Streak x'+u.streak);
+  document.getElementById('ins-badges').innerHTML=badges.length
+    ?badges.map(function(b){return'<span style="padding:4px 10px;border:1px solid var(--border);border-radius:12px;font-size:12px;color:var(--muted);">'+b+'</span>';}).join('')
+    :'<span style="font-size:12px;color:var(--muted);">No badges yet — keep going!</span>';
+  openM('ins-modal');
+}
+
+// ════════════════════════════════════════════════════════
+// PATCH addXP to save quiz best score
+// ════════════════════════════════════════════════════════
+var _v5AddXP=addXP;
+addXP=function(amount,reason){
+  _v5AddXP(amount,reason);
+  if(reason&&reason.indexOf('Quiz')>=0&&currentUser){
+    try{var p=currentUser.quizBest||0;if(typeof qScore!=='undefined'&&qScore>p){currentUser.quizBest=qScore;saveCurrentUser();}}catch(e){}
+  }
+  renderLeaderboard();
+};
+
+// ════════════════════════════════════════════════════════
+// LEADERBOARD
+// ════════════════════════════════════════════════════════
+function renderLeaderboard(){
+  var users=getUsers();
+  var list=Object.values(users).filter(function(u){return !u.isAdmin;});
+  list.sort(function(a,b){return(b.xp||0)-(a.xp||0);});
+  var pod=document.getElementById('lb-podium');
+  var rows=document.getElementById('lb-rows');
+  var empty=document.getElementById('lb-empty');
+  if(!pod||!rows)return;
+  if(!list.length){pod.innerHTML='';rows.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty)empty.style.display='none';
+  var pCfg=[
+    {idx:1,h:80,bg:'linear-gradient(180deg,#c0c0c0,#808080)',fc:'#111',bc:'#c0c0c0',sz:76},
+    {idx:0,h:110,bg:'linear-gradient(180deg,#ffd700,#b8860b)',fc:'#1a0f00',bc:'#ffd700',sz:92},
+    {idx:2,h:60,bg:'linear-gradient(180deg,#cd7f32,#8b4513)',fc:'#fff',bc:'#cd7f32',sz:76},
+  ];
+  pod.innerHTML='';
+  pCfg.forEach(function(c){
+    if(c.idx>=list.length)return;
+    var u=list[c.idx];
+    var ava=u.avatar?'<img src="'+u.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">':getAvaEl(u,c.sz);
+    var slot=document.createElement('div');slot.className='podium-slot';
+    slot.innerHTML='<div class="podium-ava" style="width:'+c.sz+'px;height:'+c.sz+'px;font-size:'+(c.sz*.38)+'px;line-height:'+c.sz+'px;border-color:'+c.bc+';" onclick="inspectUser(\''+xH(u.email)+'\')">'+ava+'</div>'+
+      '<div class="podium-name">'+xH(u.name)+'</div><div class="podium-xp">'+(u.xp||0).toLocaleString()+' XP</div>'+
+      '<div class="podium-block" style="height:'+c.h+'px;background:'+c.bg+';color:'+c.fc+';">'+(c.idx+1)+'</div>';
+    pod.appendChild(slot);
+  });
+  rows.innerHTML='';
+  list.slice(3).forEach(function(u,i){
+    var info=lvlInfo(u.xp||0);
+    var avaInner=u.avatar?'<img src="'+u.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">':'<span style="font-size:18px;line-height:40px;">'+getAvaEl(u,40)+'</span>';
+    var row=document.createElement('div');row.className='lb-row';
+    row.innerHTML='<div class="lb-rank">#'+(i+4)+'</div><div class="lb-ava">'+avaInner+'</div>'+
+      '<div class="lb-info"><div class="lb-uname">'+xH(u.name)+'</div><div class="lb-sub">'+xH(info.name)+' · '+(u.questsDone||0)+' quests · '+(u.claimedRewards||[]).length+' rewards</div></div>'+
+      '<div class="lb-xpv">'+(u.xp||0).toLocaleString()+'</div>';
+    row.onclick=function(){inspectUser(u.email);};
+    rows.appendChild(row);
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// ADMIN
+// ════════════════════════════════════════════════════════
+var adminIn=false,curATab='users';
+var ADM={u:'admin',p:'micro@2026'};
+function doAdminLogin(){
+  var u=document.getElementById('adm-u').value.trim();
+  var p=document.getElementById('adm-p').value;
+  if(u===ADM.u&&p===ADM.p){adminIn=true;document.getElementById('adm-err').style.display='none';closeM('admin-login-modal');openM('admin-panel');renderAdminPanel();}
+  else document.getElementById('adm-err').style.display='block';
+}
+function aTab(t){
+  curATab=t;
+  ['users','reviews','rewards','music','cloud'].forEach(function(n){
+    var el=document.getElementById('atab-'+n);
+    if(el)el.className=n===t?'atab on':'atab';
+  });
+  renderAdminPanel();
+}
+function renderAdminPanel(){
+  if(!adminIn)return;
+  var users=getUsers();
+  var ul=Object.values(users).filter(function(u){return !u.isAdmin;});
+  var fbs=getFBs();
+  var totalXP=ul.reduce(function(s,u){return s+(u.xp||0);},0);
+  var totalR=ul.reduce(function(s,u){return s+(u.claimedRewards||[]).length;},0);
+  document.getElementById('adm-stats-row').innerHTML=[
+    {v:ul.length,l:'TOTAL USERS',c:'var(--a)'},{v:totalXP.toLocaleString(),l:'TOTAL XP',c:'var(--warn)'},
+    {v:totalR,l:'REDEEMED',c:'var(--ok)'},{v:fbs.length,l:'REVIEWS',c:'var(--purple)'}
+  ].map(function(s){return'<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;text-align:center;"><div class="disp" style="font-size:26px;color:'+s.c+';">'+s.v+'</div><div class="mono" style="font-size:9px;color:var(--muted);">'+s.l+'</div></div>';}).join('');
+  var c=document.getElementById('adm-content');
+  if(curATab==='users'){
+    if(!ul.length){c.innerHTML='<div style="color:var(--muted);padding:20px;text-align:center;">No registered users yet. Users appear here as they sign up.</div>';return;}
+    var trs=ul.sort(function(a,b){return(b.xp||0)-(a.xp||0);}).map(function(u,i){
+      var ac=u.avatar?'<img src="'+u.avatar+'" style="width:30px;height:30px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;">'
+        :'<span style="font-size:14px;margin-right:6px;">'+getAvaEl(u,30)+'</span>';
+      return'<tr><td class="mono" style="color:var(--muted);">#'+(i+1)+'</td>'+
+        '<td>'+ac+'<strong>'+xH(u.name)+'</strong><div class="mono" style="font-size:10px;color:var(--muted);">'+xH(u.email)+'</div></td>'+
+        '<td class="mono" style="color:var(--a);">'+(u.xp||0).toLocaleString()+'</td>'+
+        '<td>'+(u.questsDone||0)+'</td><td>'+(u.claimedRewards||[]).length+'</td>'+
+        '<td class="mono">'+(u.quizBest!=null?u.quizBest+'/10':'—')+'</td>'+
+        '<td>'+(u.streak||0)+' 🔥</td>'+
+        '<td><button class="btn-rm" onclick="admDelUser(\'' + xH(u.email) + '\')">Remove</button></td></tr>';
+    }).join('');
+    c.innerHTML='<div style="overflow-x:auto;"><table class="adm-tbl"><thead><tr><th>#</th><th>User</th><th>XP</th><th>Quests</th><th>Rewards</th><th>Quiz</th><th>Streak</th><th></th></tr></thead><tbody>'+trs+'</tbody></table></div>';
+  }else if(curATab==='reviews'){
+    var pending=fbs.filter(function(f){return !f.approved;}),approved=fbs.filter(function(f){return f.approved;});
+    var h='<div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:10px;letter-spacing:.06em;">PENDING ('+pending.length+')</div>';
+    if(!pending.length)h+='<div style="color:var(--muted);font-size:13px;padding:8px 0;">No pending reviews.</div>';
+    pending.forEach(function(fb){
+      var ri=fbs.indexOf(fb);
+      h+='<div style="border:1px solid var(--warn);border-radius:6px;padding:14px;margin-bottom:10px;"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div><strong>'+xH(fb.name)+'</strong> <span style="color:#ffd700;">'+'★'.repeat(fb.rating)+'</span> <span class="mono" style="font-size:10px;color:var(--muted);">'+new Date(fb.date).toLocaleDateString()+'</span></div><div style="display:flex;gap:6px;"><button class="btn btn-a" style="font-size:10px;padding:4px 9px;" onclick="admApproveFB('+ri+')">Approve</button><button class="btn-rm" onclick="admDelFB('+ri+')">Delete</button></div></div><div style="font-size:13px;color:var(--muted);">'+xH(fb.text)+'</div></div>';
+    });
+    h+='<div class="mono" style="font-size:11px;color:var(--muted);margin:16px 0 10px;letter-spacing:.06em;">APPROVED ('+approved.length+')</div>';
+    if(!approved.length)h+='<div style="color:var(--muted);font-size:13px;">No approved reviews yet.</div>';
+    approved.forEach(function(fb){
+      var ri=fbs.indexOf(fb);
+      h+='<div style="border:1px solid var(--ok);border-radius:6px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;"><div><strong>'+xH(fb.name)+'</strong> <span style="color:var(--ok);">'+'★'.repeat(fb.rating)+'</span> — <span style="font-size:12px;color:var(--muted);">'+xH(fb.text.slice(0,80))+(fb.text.length>80?'…':'')+'</span></div><button class="btn-rm" onclick="admDelFB('+ri+')">Delete</button></div>';
+    });
+    c.innerHTML=h;
+  }else if(curATab==='rewards'){
+    var red=[];
+    Object.values(users).filter(function(u){return !u.isAdmin;}).forEach(function(u){(u.claimedRewards||[]).forEach(function(r){red.push(Object.assign({},r,{un:u.name,ue:u.email}));});});
+    red.sort(function(a,b){return new Date(b.date||0)-new Date(a.date||0);});
+    if(!red.length){c.innerHTML='<div style="color:var(--muted);padding:20px;font-size:14px;">No rewards redeemed yet.</div>';return;}
+    var rs=red.map(function(r){return'<tr><td>'+xH(r.un)+'</td><td class="mono" style="color:var(--a);">'+xH(r.id||'—')+'</td><td class="mono" style="color:var(--ok);">'+xH(r.code||'PENDING')+'</td><td class="mono" style="font-size:10px;color:var(--muted);">'+new Date(r.date||0).toLocaleDateString()+'</td></tr>';}).join('');
+    c.innerHTML='<div style="overflow-x:auto;"><table class="adm-tbl"><thead><tr><th>User</th><th>Reward</th><th>Code</th><th>Date</th></tr></thead><tbody>'+rs+'</tbody></table></div>';
+  }else if(curATab==='music'){
+    var sl=localStorage.getItem('mp_track_label')||'Default (Web Audio)';
+    var su=localStorage.getItem('mp_track_url')||'';
+    c.innerHTML='<div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:.08em;">🎵 BACKGROUND MUSIC SETTINGS</div>'+
+      '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:14px;">'+
+      '<div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:4px;">CURRENT TRACK</div>'+
+      '<div id="cur-track-name" style="font-weight:600;color:var(--a);margin-bottom:16px;">'+xH(sl)+'</div>'+
+      '<div style="margin-bottom:12px;"><label>Upload MP3/WAV from device</label><input type="file" accept="audio/*" id="adm-aud-file"/></div>'+
+      '<div style="margin-bottom:12px;"><label>Or paste a direct audio URL</label><input type="text" id="adm-aud-url" value="'+xH(su)+'" placeholder="https://…/track.mp3"/></div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-a" onclick="admSetURL()">Apply URL</button><button class="btn btn-o" onclick="admUpload()">Upload File</button><button class="btn btn-ghost" onclick="admReset()">Reset Default</button></div></div>'+
+      '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px;">'+
+      '<div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:10px;letter-spacing:.08em;">QUICK PRESETS</div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;">'+
+      '<button class="btn btn-ghost" style="font-size:11px;" onclick="admPreset(\'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3\',\'Ambient 1\')">🎵 Ambient 1</button>'+
+      '<button class="btn btn-ghost" style="font-size:11px;" onclick="admPreset(\'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3\',\'Ambient 2\')">🎵 Ambient 2</button>'+
+      '<button class="btn btn-ghost" style="font-size:11px;" onclick="admPreset(\'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3\',\'Ambient 3\')">🎵 Ambient 3</button>'+
+      '</div></div>';
+  }else if(curATab==='cloud'){
+    var cfg=getCloudCfg();
+    c.innerHTML=
+      '<div class="mono" style="font-size:11px;color:var(--ok);margin-bottom:14px;letter-spacing:.08em;">☁️ CROSS-DEVICE USER SYNC — powered by JSONBin.io (free)</div>'+
+      '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:18px;margin-bottom:14px;">'+
+        '<div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:6px;">HOW TO SET UP (one time)</div>'+
+        '<ol style="font-size:13px;color:var(--muted);line-height:1.9;padding-left:18px;margin-bottom:14px;">'+
+          '<li>Go to <a href="https://jsonbin.io" target="_blank" style="color:var(--a);">jsonbin.io</a> → Create a free account</li>'+
+          '<li>Copy your <strong style="color:#d0eaf8">Master Key</strong> from the API Keys page</li>'+
+          '<li>Click <em style="color:var(--a)">Create Bin</em> → paste <code style="background:rgba(0,200,255,.1);padding:1px 5px;border-radius:2px;">{"users":[],"logs":[]}</code> → Save</li>'+
+          '<li>Copy the <strong style="color:#d0eaf8">Bin ID</strong> from the URL (the part after /b/)</li>'+
+          '<li>Paste both below and click <strong style="color:var(--ok)">Save Cloud Config</strong></li>'+
+        '</ol>'+
+        '<div style="margin-bottom:10px;"><label>JSONBin Master Key</label><input type="password" id="cloud-key-inp" value="'+xH(cfg.key||'')+'" placeholder="$2b$10$…"/></div>'+
+        '<div style="margin-bottom:14px;"><label>Bin ID</label><input type="text" id="cloud-bin-inp" value="'+xH(cfg.bin||'')+'" placeholder="6…"/></div>'+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;">'+
+          '<button class="btn btn-a" onclick="saveCloudCfg()">💾 Save Cloud Config</button>'+
+          '<button class="btn btn-o" onclick="cloudSyncNow()">☁️ Sync Local → Cloud</button>'+
+          '<button class="btn btn-ghost" onclick="cloudFetch()">🔄 Refresh from Cloud</button>'+
+          (cfg.key&&cfg.bin?'<button class="btn btn-ghost" style="color:var(--danger);border-color:var(--danger);" onclick="clearCloudCfg()">🗑 Clear Config</button>':'')+'</div>'+
+        '<div id="cloud-status" style="margin-top:10px;font-family:IBM Plex Mono,monospace;font-size:11px;color:var(--muted);"></div>'+
+      '</div>'+
+      '<div id="cloud-users-wrap" style="display:'+(cfg.key&&cfg.bin?'block':'none')+';">'+
+        '<div class="mono" style="font-size:11px;color:var(--ok);margin-bottom:10px;letter-spacing:.06em;">ALL REGISTERED USERS (ALL DEVICES)</div>'+
+        '<div id="cloud-users-table"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Click "Refresh from Cloud" to load users from all devices.</div></div>'+
+        '<div class="mono" style="font-size:11px;color:var(--purple);margin:16px 0 10px;letter-spacing:.06em;">RECENT LOGIN EVENTS (ALL DEVICES)</div>'+
+        '<div id="cloud-logs-table"><div style="color:var(--muted);font-size:13px;padding:8px 0;">Login events from all devices appear here.</div></div>'+
+      '</div>';
+  }
+  if(!adminIn||!confirm('Remove user '+email+'? This cannot be undone.'))return;
+  var u=getUsers();delete u[email];saveUsers(u);
+  renderAdminPanel();renderLeaderboard();showToast('User removed.','ok');
+}
+function admApproveFB(i){var f=getFBs();if(f[i])f[i].approved=true;saveFBs(f);renderAdminPanel();renderReviews();showToast('Review approved ✓','ok');}
+function admDelFB(i){var f=getFBs();f.splice(i,1);saveFBs(f);renderAdminPanel();renderReviews();showToast('Review deleted.','ok');}
+function admSetURL(){var url=document.getElementById('adm-aud-url').value.trim();if(url)admApplyTrack(url,url.split('/').pop()||url);}
+function admUpload(){var fi=document.getElementById('adm-aud-file').files[0];if(!fi){showToast('Select a file first','error');return;}var r=new FileReader();r.onload=function(e){admApplyTrack(e.target.result,fi.name);};r.readAsDataURL(fi);}
+function admPreset(url,label){admApplyTrack(url,label);}
+function admReset(){localStorage.removeItem('mp_track_url');localStorage.removeItem('mp_track_label');var el=document.getElementById('cur-track-name');if(el)el.textContent='Default (Web Audio)';showToast('Music reset to default','ok');}
+function admApplyTrack(url,label){
+  localStorage.setItem('mp_track_url',url);localStorage.setItem('mp_track_label',label);
+  var el=document.getElementById('cur-track-name');if(el)el.textContent=label;
+  var ui=document.getElementById('adm-aud-url');if(ui)ui.value=url;
+  showToast('Track updated: '+label,'ok');
+}
+
+// ════════════════════════════════════════════════════════
+// REVIEWS
+// ════════════════════════════════════════════════════════
+var FB_KEY2='mp_reviews_v3';
+function getFBs(){try{return JSON.parse(localStorage.getItem(FB_KEY2)||'[]');}catch(e){return[];}}
+function saveFBs(a){localStorage.setItem(FB_KEY2,JSON.stringify(a));}
+var curStars=0;
+function setStars(v){curStars=v;renderS();}
+function hoverS(v){var s=document.querySelectorAll('#star-row span');s.forEach(function(el,i){el.textContent=i<v?'★':'☆';el.style.color=i<v?'#ffd700':'var(--muted)';});}
+function renderS(){hoverS(curStars);}
+function openReviewModal(){
+  curStars=0;renderS();
+  document.getElementById('rv-name').value=currentUser?currentUser.name:'';
+  document.getElementById('rv-text').value='';
+  document.getElementById('rv-err').style.display='none';
+  openM('review-modal');
+}
+function submitReview(){
+  var n=document.getElementById('rv-name').value.trim();
+  var t=document.getElementById('rv-text').value.trim();
+  if(!n||curStars===0||t.length<10){document.getElementById('rv-err').style.display='block';return;}
+  document.getElementById('rv-err').style.display='none';
+  var fbs=getFBs();
+  fbs.push({name:n,text:t,rating:curStars,date:Date.now(),approved:false,email:currentUser?currentUser.email:null});
+  saveFBs(fbs);closeM('review-modal');
+  if(currentUser)addXP(20,'Review submitted');
+  showToast('Review submitted — awaiting approval 🎉','ok');
+}
+function renderReviews(){
+  var fbs=getFBs().filter(function(f){return f.approved&&f.rating>=4;});
+  var g=document.getElementById('reviews-grid');
+  var empty=document.getElementById('reviews-empty');
+  var avgEl=document.getElementById('avg-stars');
+  if(!g)return;
+  var allA=getFBs().filter(function(f){return f.approved;});
+  if(allA.length){
+    var avg=(allA.reduce(function(s,f){return s+f.rating;},0)/allA.length).toFixed(1);
+    avgEl.innerHTML='<span style="color:#ffd700;font-size:18px;">'+'★'.repeat(Math.round(avg))+'☆'.repeat(5-Math.round(avg))+'</span><span class="mono" style="font-size:12px;">'+avg+' avg · '+allA.length+' review'+(allA.length!==1?'s':'')+'</span>';
+  }
+  if(!fbs.length){g.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty)empty.style.display='none';
+  g.innerHTML=fbs.slice(-6).reverse().map(function(fb){
+    return'<div class="rev-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">'+
+      '<div style="width:36px;height:36px;border-radius:50%;background:var(--aglow);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;">'+xH(fb.name.charAt(0).toUpperCase())+'</div>'+
+      '<div><div style="font-weight:700;font-size:14px;">'+xH(fb.name)+'</div><div style="color:#ffd700;font-size:15px;">'+'★'.repeat(fb.rating)+'☆'.repeat(5-fb.rating)+'</div></div>'+
+      '<div class="mono" style="font-size:10px;color:var(--muted);margin-left:auto;">'+new Date(fb.date).toLocaleDateString()+'</div></div>'+
+      '<p style="font-size:13px;color:var(--muted);line-height:1.7;position:relative;z-index:1;">'+xH(fb.text)+'</p></div>';
+  }).join('');
+}
+(function seedRevs(){
+  if(getFBs().length)return;
+  saveFBs([
+    {name:'Arjun S.',text:'The calculator showed I was ingesting 18,000 particles/week from bottled water. Switched to a filter immediately!',rating:5,approved:true,date:Date.now()-864000000},
+    {name:'Priya M.',text:'The interactive map and lifecycle sections are brilliant. Every stat has a real citation. Already converted my family.',rating:5,approved:true,date:Date.now()-432000000},
+    {name:'Riya K.',text:'Love the quest system — it keeps me motivated to actually make changes rather than just read about the problem.',rating:4,approved:true,date:Date.now()-172800000},
+    {name:'Dev P.',text:'Every stat links to a peer-reviewed source. This is exactly how science communication should be done.',rating:5,approved:true,date:Date.now()-86400000},
+  ]);
+})();
+
+// ════════════════════════════════════════════════════════
+// ITEM CALCULATOR
+// ════════════════════════════════════════════════════════
+var ITEMS=[
+  {icon:'👕',name:'Synthetic T-Shirt',cat:'Clothing',risk:9,color:'#00c8ff',stats:{'Fibres per wash':'700K – 1.5M','Lifetime release':'~300M fibres','Weekly exposure':'~2,000 particles'},detail:'A polyester T-shirt releases 700K–1.5M microfibre particles per wash. Over ~200 washes that\'s 300M fibres into waterways. Fibres (10–20µm) pass most wastewater treatment plants.',action:'Use a Guppy Friend laundry bag (captures 86% of fibres). Wash at lower temperatures. Prefer cotton or linen.',src:'IUCN, 2017; Sillanpää & Sainio, 2017'},
+  {icon:'🍶',name:'Plastic Water Bottle',cat:'Beverages',risk:10,color:'#ff4060',stats:{'MPs per litre':'~94 particles','Ocean degradation':'200–450 years','Reuse risk':'10× MPs when scratched'},detail:'A 1-litre PET bottle contains ~94 microplastic particles per litre (WHO 2019). Scratching or sun exposure dramatically increases leaching. Reusing single-use bottles multiplies contamination tenfold.',action:'Switch to stainless steel or glass. Reverse osmosis filtration removes 99%+ of MPs from tap water.',src:'WHO, 2019; Environ. Sci. & Tech., 2018'},
+  {icon:'🛍️',name:'Plastic Bag (LDPE)',cat:'Packaging',risk:7,color:'#ff9f00',stats:{'Degradation time':'100–500 years','Total fragments':'~35,000 particles','Food leaching':'~200 MPs/warm-food use'},detail:'LDPE bags take 100–500 years to degrade. One bag produces ~35,000 MP particles as it fragments. Warm or oily food in a plastic bag picks up ~200+ particles within hours.',action:'Switch to cotton totes, glass containers, or beeswax wraps. Never heat food in plastic.',src:'UNEP, 2018; Sci. Total Environ., 2020'},
+  {icon:'🧺',name:'Fleece Jacket',cat:'Clothing',risk:10,color:'#c084fc',stats:{'Fibres per wash':'Up to 1.7g / 250K fibres','Lifetime':'20M+ fibres total','Rank':'Highest per-garment source'},detail:'Each wash releases up to 1.7g (250,000 individual fibres) into wastewater. Long, light fibres travel easily through treatment plants and accumulate in rivers and oceans.',action:'Use a Guppy Friend bag every wash. Wash less often, at lower temperatures. Consider wool or down alternatives.',src:'IUCN, 2017; Environ. Sci. & Tech., 2016'},
+  {icon:'🍱',name:'Plastic Food Container',cat:'Food',risk:9,color:'#ff6b00',stats:{'MPs cold use':'~30 MPs per meal','MPs microwaved':'~300 MPs per meal','Extras':'BPA + phthalates leach too'},detail:'Polypropylene containers leach ~30 MPs per cold meal. Microwaving jumps this to 300+ MPs, alongside chemical plasticisers (BPA, phthalates) that act as endocrine disruptors.',action:'Use glass or ceramic for microwaving. Never pour boiling liquid into plastic. Avoid scratching containers.',src:'Environ. Sci. & Tech., 2020; Nat. Food, 2023'},
+  {icon:'🛞',name:'Car Tire (per 1000km)',cat:'Transport',risk:8,color:'#ff9f00',stats:{'Rubber shed':'~40g per 1,000km','Lifetime':'~4kg per tire total','Ocean share':'28% of all ocean MPs'},detail:'Tire wear particles (TWP) are the second-largest ocean MP source. One tire sheds ~40g per 1,000km. At 50,000km lifetime that\'s ~4kg of micro-rubber entering waterways via stormwater runoff.',action:'Drive smoothly, maintain correct tire pressure, use public transport or cycle. No consumer filter currently exists for TWPs.',src:'IUCN, 2021; Sci. Total Environ., 2020'},
+  {icon:'🧴',name:'Glitter / Cosmetics',cat:'Personal Care',risk:6,color:'#ffd700',stats:{'Per application':'1,000–5,000 MPs washed off','Material':'Literal PET film cut to <1mm','Filtration':'Pass through most plants'},detail:'Glitter IS microplastic — typically PET film. A single glitter cosmetic use releases 1,000–5,000 particles on washing off. These are too small for most filtration systems.',action:'Choose mica-based or biodegradable cellulose glitter. Check cosmetics for "polyethylene" or "PET" in ingredients.',src:'GESAMP, 2015; Environ. Int., 2021'},
+  {icon:'🪥',name:'Synthetic Toothbrush',cat:'Personal Care',risk:5,color:'#00e5a0',stats:{'Per use':'~3mg nylon microfibre','Lifetime':'~50,000 MPs per brush','Ingested directly':'~400 particles/week'},detail:'Nylon bristles shed ~3mg microfibre-like particles per use. Over a 3-month lifespan (~180 uses), one brush contributes ~50,000 MP-like particles, many directly ingested during brushing.',action:'Switch to a bamboo toothbrush with plant-based bristles. Use natural toothpaste (silica abrasive, not polyethylene).',src:'GESAMP, 2015; J. Hazardous Materials, 2021'},
+];
+function renderItemCalc(){
+  var g=document.getElementById('ic-grid');if(!g)return;g.innerHTML='';
+  ITEMS.forEach(function(item){
+    var card=document.createElement('div');card.className='ic-card';
+    card.innerHTML='<div style="font-size:30px;margin-bottom:8px;">'+item.icon+'</div>'+
+      '<div style="font-weight:700;font-size:13px;line-height:1.3;margin-bottom:4px;">'+item.name+'</div>'+
+      '<div class="mono" style="font-size:9px;color:var(--muted);margin-bottom:8px;">'+item.cat+'</div>'+
+      '<div style="display:flex;align-items:center;gap:4px;"><div style="flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;"><div style="width:'+item.risk*10+'%;height:100%;border-radius:2px;background:'+item.color+';"></div></div><span class="mono" style="font-size:9px;color:'+item.color+';">'+item.risk+'/10</span></div>';
+    card.onclick=function(){
+      document.querySelectorAll('.ic-card').forEach(function(c){c.classList.remove('sel');});
+      card.classList.add('sel');showItemDetail(item);
+    };
+    g.appendChild(card);
+  });
+}
+function showItemDetail(item){
+  var el=document.getElementById('ic-result');el.style.display='block';
+  var sh=Object.entries(item.stats).map(function(kv){
+    return'<div style="padding:10px 14px;border:1px solid var(--border);border-radius:4px;"><div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:.08em;margin-bottom:3px;">'+kv[0].toUpperCase()+'</div><div style="font-size:14px;font-weight:600;color:'+item.color+';">'+kv[1]+'</div></div>';
+  }).join('');
+  el.innerHTML='<div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px;"><span style="font-size:44px;">'+item.icon+'</span><div><div class="disp" style="font-size:26px;color:'+item.color+';">'+item.name+'</div><div class="mono" style="font-size:11px;color:var(--muted);">'+item.cat+' · Risk: <strong style="color:'+item.color+';">'+item.risk+'/10</strong></div></div></div>'+
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px;">'+sh+'</div>'+
+    '<div style="margin-bottom:14px;"><div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:.08em;">THE SCIENCE</div><p style="font-size:14px;color:var(--muted);line-height:1.8;">'+item.detail+'</p></div>'+
+    '<div style="padding:14px;background:rgba(0,229,160,.06);border:1px solid var(--ok);border-radius:4px;margin-bottom:12px;"><div class="mono" style="font-size:10px;color:var(--ok);margin-bottom:6px;letter-spacing:.08em;">💡 WHAT YOU CAN DO</div><p style="font-size:13px;line-height:1.7;">'+item.action+'</p></div>'+
+    '<div class="mono" style="font-size:10px;color:var(--muted);">Sources: '+item.src+'</div>';
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ════════════════════════════════════════════════════════
+// CLOUD SYNC (JSONBin.io cross-device user registry)
+// ════════════════════════════════════════════════════════
+var CLOUD_CFG_KEY='mp_cloud_cfg_v1';
+function getCloudCfg(){try{return JSON.parse(localStorage.getItem(CLOUD_CFG_KEY)||'{}');}catch(e){return{};}}
+function saveCloudCfg(){
+  var k=document.getElementById('cloud-key-inp').value.trim();
+  var b=document.getElementById('cloud-bin-inp').value.trim();
+  if(!k||!b){setCloudStatus('⚠ Both Master Key and Bin ID are required.','var(--warn)');return;}
+  localStorage.setItem(CLOUD_CFG_KEY,JSON.stringify({key:k,bin:b}));
+  setCloudStatus('✓ Config saved. Click "Sync Local → Cloud" to push your local users.','var(--ok)');
+  document.getElementById('cloud-users-wrap').style.display='block';
+}
+function clearCloudCfg(){
+  if(!confirm('Clear cloud config? This only removes the connection, not any cloud data.'))return;
+  localStorage.removeItem(CLOUD_CFG_KEY);
+  showToast('Cloud config cleared.','ok');
+  renderAdminPanel();
+}
+function setCloudStatus(msg,col){
+  var el=document.getElementById('cloud-status');
+  if(el){el.textContent=msg;el.style.color=col||'var(--muted)';}
+}
+
+function cloudApiHeaders(){
+  var cfg=getCloudCfg();
+  return{'Content-Type':'application/json','X-Master-Key':cfg.key,'X-Bin-Meta':false};
+}
+
+async function cloudFetch(){
+  var cfg=getCloudCfg();
+  if(!cfg.key||!cfg.bin){setCloudStatus('⚠ No cloud config. Enter your Master Key & Bin ID first.','var(--warn)');return;}
+  setCloudStatus('⏳ Fetching from cloud…','var(--a)');
+  try{
+    var r=await fetch('https://api.jsonbin.io/v3/b/'+cfg.bin+'/latest',{headers:cloudApiHeaders()});
+    if(!r.ok)throw new Error('HTTP '+r.status+': '+await r.text());
+    var data=await r.json();
+    var record=data.record||{users:[],logs:[]};
+    renderCloudUsers(record.users||[]);
+    renderCloudLogs(record.logs||[]);
+    setCloudStatus('✓ Synced from cloud — '+new Date().toLocaleTimeString(),'var(--ok)');
+  }catch(e){setCloudStatus('✗ Error: '+e.message,'var(--danger)');}
+}
+
+async function cloudSyncNow(){
+  var cfg=getCloudCfg();
+  if(!cfg.key||!cfg.bin){setCloudStatus('⚠ No cloud config set.','var(--warn)');return;}
+  setCloudStatus('⏳ Syncing to cloud…','var(--a)');
+  try{
+    // First fetch existing cloud data
+    var r=await fetch('https://api.jsonbin.io/v3/b/'+cfg.bin+'/latest',{headers:cloudApiHeaders()});
+    var existing={users:[],logs:[]};
+    if(r.ok){var d=await r.json();existing=d.record||{users:[],logs:[]};}
+    // Merge local users into cloud
+    var localUsers=Object.values(getUsers()).filter(function(u){return !u.isAdmin;});
+    var cloudUserMap={};
+    (existing.users||[]).forEach(function(u){cloudUserMap[u.email]=u;});
+    localUsers.forEach(function(u){
+      cloudUserMap[u.email]={
+        email:u.email,name:u.name,
+        joined:u.joined||new Date().toISOString(),
+        xp:u.xp||0,questsDone:u.questsDone||0,
+        streak:u.streak||0,quizBest:u.quizBest||null,
+        rewardCount:(u.claimedRewards||[]).length,
+        lastSeen:u.lastSeen||new Date().toISOString(),
+        device:u.lastDevice||'Unknown'
+      };
+    });
+    var merged=Object.values(cloudUserMap);
+    // Preserve existing logs, add any new local logs
+    var logs=existing.logs||[];
+    var newLogs=JSON.parse(localStorage.getItem('mp_cloud_logs')||'[]');
+    newLogs.forEach(function(l){logs.unshift(l);});
+    logs=logs.slice(0,200); // cap at 200 events
+    localStorage.setItem('mp_cloud_logs','[]');
+    // PUT updated data
+    var put=await fetch('https://api.jsonbin.io/v3/b/'+cfg.bin,{
+      method:'PUT',headers:cloudApiHeaders(),
+      body:JSON.stringify({users:merged,logs:logs})
+    });
+    if(!put.ok)throw new Error('PUT failed: '+put.status);
+    renderCloudUsers(merged);renderCloudLogs(logs);
+    setCloudStatus('✓ Synced '+localUsers.length+' user(s) to cloud — '+new Date().toLocaleTimeString(),'var(--ok)');
+    showToast('Cloud sync complete ☁️','ok');
+  }catch(e){setCloudStatus('✗ Sync error: '+e.message,'var(--danger)');}
+}
+
+function renderCloudUsers(users){
+  var el=document.getElementById('cloud-users-table');if(!el)return;
+  if(!users.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;padding:8px 0;">No cloud users yet.</div>';return;}
+  var sorted=users.slice().sort(function(a,b){return(b.xp||0)-(a.xp||0);});
+  var rows=sorted.map(function(u,i){
+    return'<tr>'+
+      '<td class="mono" style="color:var(--muted);">#'+(i+1)+'</td>'+
+      '<td><strong>'+xH(u.name||'—')+'</strong><br><span class="mono" style="font-size:10px;color:var(--muted);">'+xH(u.email)+'</span></td>'+
+      '<td class="mono" style="color:var(--a);">'+(u.xp||0).toLocaleString()+'</td>'+
+      '<td>'+(u.questsDone||0)+'</td>'+
+      '<td>'+(u.rewardCount||0)+'</td>'+
+      '<td class="mono" style="font-size:10px;">'+xH(u.device||'—')+'</td>'+
+      '<td class="mono" style="font-size:10px;color:var(--muted);">'+(u.lastSeen?new Date(u.lastSeen).toLocaleString():'—')+'</td>'+
+      '<td class="mono" style="font-size:10px;color:var(--muted);">'+(u.joined?new Date(u.joined).toLocaleDateString():'—')+'</td>'+
+    '</tr>';
+  }).join('');
+  el.innerHTML='<div style="overflow-x:auto;"><table class="adm-tbl"><thead><tr><th>#</th><th>User</th><th>XP</th><th>Quests</th><th>Rewards</th><th>Device</th><th>Last Seen</th><th>Joined</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div class="mono" style="font-size:10px;color:var(--muted);margin-top:8px;">'+users.length+' user(s) across all devices</div>';
+}
+
+function renderCloudLogs(logs){
+  var el=document.getElementById('cloud-logs-table');if(!el)return;
+  if(!logs.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;padding:8px 0;">No login events yet.</div>';return;}
+  var rows=logs.slice(0,50).map(function(l){
+    var ic=l.action==='signup'?'🆕':l.action==='login'?'🔑':'📝';
+    return'<tr>'+
+      '<td style="font-size:16px;">'+ic+'</td>'+
+      '<td><strong>'+xH(l.name||'—')+'</strong><br><span class="mono" style="font-size:10px;color:var(--muted);">'+xH(l.email||'')+'</span></td>'+
+      '<td class="mono" style="font-size:10px;color:'+(l.action==='signup'?'var(--ok)':l.action==='login'?'var(--a)':'var(--muted)')+';text-transform:uppercase;">'+xH(l.action||'—')+'</td>'+
+      '<td class="mono" style="font-size:10px;color:var(--muted);">'+xH(l.device||'—')+'</td>'+
+      '<td class="mono" style="font-size:10px;color:var(--muted);">'+(l.ts?new Date(l.ts).toLocaleString():'—')+'</td>'+
+    '</tr>';
+  }).join('');
+  el.innerHTML='<div style="overflow-x:auto;"><table class="adm-tbl"><thead><tr><th>Event</th><th>User</th><th>Action</th><th>Device</th><th>Time</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div class="mono" style="font-size:10px;color:var(--muted);margin-top:6px;">Showing up to 50 most recent events</div>';
+}
+
+// Queue a log event locally and auto-push to cloud if configured
+function queueCloudLog(action,user){
+  var device=getDeviceLabel();
+  var ev={action:action,email:user.email,name:user.name,device:device,ts:new Date().toISOString()};
+  var logs=JSON.parse(localStorage.getItem('mp_cloud_logs')||'[]');
+  logs.unshift(ev);logs=logs.slice(0,50);
+  localStorage.setItem('mp_cloud_logs',JSON.stringify(logs));
+  // auto push if cloud is configured (background, fire-and-forget)
+  var cfg=getCloudCfg();
+  if(cfg.key&&cfg.bin) setTimeout(cloudSyncNow,1500);
+}
+
+function getDeviceLabel(){
+  var ua=navigator.userAgent;
+  if(/iPhone|iPad|iPod/i.test(ua))return'iOS';
+  if(/Android/i.test(ua))return'Android';
+  if(/Windows/i.test(ua))return'Windows';
+  if(/Mac/i.test(ua))return'Mac';
+  if(/Linux/i.test(ua))return'Linux';
+  return'Unknown';
+}
+
+
+renderReviews();
+
+// Session handled by Firebase (see module script below)
+</script>
+
+<div class="modal-overlay" id="profile-modal">
+  <div class="pmod">
+    <button class="mx" onclick="closeM('profile-modal')">✕</button>
+    <div style="display:flex;align-items:center;gap:18px;margin-bottom:22px;flex-wrap:wrap;">
+      <div class="ava-wrap"><div class="ava96" id="pm-ava">🌊</div><div class="ava-ov">📷</div><input type="file" accept="image/*" onchange="handleAvaUpload(event)"/></div>
+      <div>
+        <div class="disp" style="font-size:24px;color:var(--a);" id="pm-name">—</div>
+        <div class="mono" style="font-size:11px;color:var(--purple);" id="pm-lvl">—</div>
+        <div class="mono" style="font-size:11px;color:var(--ok);" id="pm-email">—</div>
+      </div>
+    </div>
+    <div class="grid3" style="gap:10px;margin-bottom:18px;">
+      <div class="istat"><div class="istat-v" id="pm-xp">0</div><div class="istat-l">XP</div></div>
+      <div class="istat"><div class="istat-v" id="pm-qd">0</div><div class="istat-l">QUESTS</div></div>
+      <div class="istat"><div class="istat-v" id="pm-rc">0</div><div class="istat-l">REWARDS</div></div>
+    </div>
+    <div style="margin-bottom:14px;"><label>Display Name</label><input type="text" id="pm-name-inp" placeholder="Your name"/></div>
+    <button class="btn btn-a" style="width:100%;justify-content:center;" onclick="saveProfileName()">Save Changes</button>
+    <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:8px;" onclick="doSignOutFull()">Sign Out</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="ins-modal">
+  <div class="pmod">
+    <button class="mx" onclick="closeM('ins-modal')">✕</button>
+    <div style="display:flex;align-items:center;gap:18px;margin-bottom:22px;flex-wrap:wrap;">
+      <div class="ava96" id="ins-ava">🌊</div>
+      <div>
+        <div class="disp" style="font-size:24px;color:var(--a);" id="ins-name">—</div>
+        <div class="mono" style="font-size:11px;color:var(--purple);" id="ins-lvl">—</div>
+        <div class="mono" style="font-size:11px;color:var(--muted);" id="ins-joined">—</div>
+      </div>
+    </div>
+    <div class="grid3" style="gap:10px;margin-bottom:18px;">
+      <div class="istat"><div class="istat-v" id="ins-xp">0</div><div class="istat-l">XP</div></div>
+      <div class="istat"><div class="istat-v" id="ins-qd">0</div><div class="istat-l">QUESTS</div></div>
+      <div class="istat"><div class="istat-v" id="ins-rc">0</div><div class="istat-l">REWARDS</div></div>
+    </div>
+    <div style="margin-bottom:14px;"><div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:8px;letter-spacing:.08em;">📊 QUIZ PERFORMANCE</div><div id="ins-quiz"></div></div>
+    <div id="ins-badges" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="admin-login-modal">
+  <div class="modal-box" style="max-width:380px;position:relative;">
+    <button class="mx" onclick="closeM('admin-login-modal')">✕</button>
+    <div class="disp" style="font-size:28px;color:var(--danger);margin-bottom:4px;">⚙ ADMIN ACCESS</div>
+    <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:20px;">Restricted · Authorised Personnel Only</div>
+    <div style="margin-bottom:12px;"><label>Username</label><input type="text" id="adm-u" placeholder="admin" autocomplete="off"/></div>
+    <div style="margin-bottom:12px;"><label>Password</label><input type="password" id="adm-p" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+    <div id="adm-err" style="color:var(--danger);font-size:12px;display:none;margin-bottom:8px;">Invalid credentials.</div>
+    <button class="btn btn-a" style="width:100%;justify-content:center;" onclick="doAdminLogin()">Enter Admin Panel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="admin-panel">
+  <div style="background:var(--card);border:1px solid var(--danger);border-radius:10px;padding:24px;width:100%;max-width:980px;max-height:92vh;overflow-y:auto;position:relative;animation:fadeUp .3s ease;">
+    <button class="mx" onclick="closeM('admin-panel');adminIn=false;">✕</button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
+      <div class="disp" style="font-size:28px;color:var(--danger);">⚙ ADMIN PANEL</div>
+      <div class="mono" style="font-size:9px;color:var(--danger);padding:2px 8px;border:1px solid var(--danger);border-radius:2px;">RESTRICTED</div>
+      <div style="margin-left:auto;"><button class="btn btn-ghost" style="font-size:10px;padding:4px 9px;" onclick="closeM('admin-panel');adminIn=false;">Sign Out ⚙</button></div>
+    </div>
+    <div id="adm-stats-row" class="grid4" style="gap:10px;margin-bottom:18px;"></div>
+    <div style="display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:18px;">
+      <button class="atab on" id="atab-users"  onclick="aTab('users')">👥 Users</button>
+      <button class="atab"    id="atab-reviews" onclick="aTab('reviews')">💬 Reviews</button>
+      <button class="atab"    id="atab-rewards" onclick="aTab('rewards')">🎁 Rewards</button>
+      <button class="atab"    id="atab-music"   onclick="aTab('music')">🎵 Music</button>
+      <button class="atab"    id="atab-cloud"   onclick="aTab('cloud')" style="color:var(--ok);">☁️ Cloud</button>
+    </div>
+    <div id="adm-content"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="review-modal">
+  <div class="modal-box" style="max-width:480px;position:relative;">
+    <button class="mx" onclick="closeM('review-modal')">✕</button>
+    <div class="disp" style="font-size:26px;color:var(--a);margin-bottom:4px;">💬 LEAVE A REVIEW</div>
+    <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:18px;">Help others + earn 20 XP</div>
+    <div style="margin-bottom:14px;"><label>Star Rating</label>
+      <div id="star-row" style="display:flex;gap:6px;font-size:30px;">
+        <span style="cursor:pointer;" onclick="setStars(1)" onmouseover="hoverS(1)" onmouseout="renderS()">☆</span>
+        <span style="cursor:pointer;" onclick="setStars(2)" onmouseover="hoverS(2)" onmouseout="renderS()">☆</span>
+        <span style="cursor:pointer;" onclick="setStars(3)" onmouseover="hoverS(3)" onmouseout="renderS()">☆</span>
+        <span style="cursor:pointer;" onclick="setStars(4)" onmouseover="hoverS(4)" onmouseout="renderS()">☆</span>
+        <span style="cursor:pointer;" onclick="setStars(5)" onmouseover="hoverS(5)" onmouseout="renderS()">☆</span>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;"><label>Your Name</label><input type="text" id="rv-name" placeholder="Display as…"/></div>
+    <div style="margin-bottom:12px;"><label>Review</label><textarea id="rv-text" rows="4" style="resize:vertical;" placeholder="What did you learn? How has it helped?"></textarea></div>
+    <div id="rv-err" style="color:var(--danger);font-size:12px;display:none;margin-bottom:8px;">Please add a rating and at least 10 characters.</div>
+    <button class="btn btn-a" style="width:100%;justify-content:center;" onclick="submitReview()">Submit Review</button>
+  </div>
+</div>
+
+
+<!-- Firebase Auth Bridge -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyBldLO7-esm8VzBqMGgxTnBCIDyVwXlJfg",
+  authDomain:        "microplasticsaware.firebaseapp.com",
+  projectId:         "microplasticsaware",
+  storageBucket:     "microplasticsaware.firebasestorage.app",
+  messagingSenderId: "212570212231",
+  appId:             "1:212570212231:web:06bb5159dc29e074b53522"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Expose Firebase sign-out so the main script can call it
+window._firebaseSignOut = function() {
+  fbSignOut(auth).then(() => {
+    window.location.href = 'index.html';
+  });
+};
+
+// onAuthStateChanged is the single source of truth
+onAuthStateChanged(auth, function(user) {
+  if (!user) {
+    // Not logged in — send to auth page
+    window.location.href = 'index.html';
+    return;
+  }
+
+  // User is logged in via Firebase — load or create their local profile
+  const DB_KEY = 'mplastics_users';
+  const SESSION_KEY = 'mplastics_session';
+  let users = {};
+  try { users = JSON.parse(localStorage.getItem(DB_KEY) || '{}'); } catch(e) {}
+
+  const email = user.email;
+  if (!users[email]) {
+    // First time on this device — create a profile from Firebase user
+    const name = user.displayName || email.split('@')[0];
+    users[email] = {
+      name, email,
+      xp: 0, level: 1, streak: 0, coins: 0, questsDone: 0,
+      lastLogin: new Date().toDateString(),
+      dailyReset: Date.now(),
+      weeklyReset: Date.now(),
+      dailyProgress: {},
+      weeklyProgress: {},
+      claimedRewards: [],
+      calcData: {},
+      joined: new Date().toISOString()
+    };
+    localStorage.setItem(DB_KEY, JSON.stringify(users));
+  }
+
+  // Update streak on daily login
+  const today = new Date().toDateString();
+  const ud = users[email];
+  if (ud.lastLogin !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    ud.streak = (ud.lastLogin === yesterday) ? (ud.streak || 0) + 1 : 1;
+    ud.lastLogin = today;
+    users[email] = ud;
+    localStorage.setItem(DB_KEY, JSON.stringify(users));
+  }
+
+  // Set session and activate the app
+  localStorage.setItem(SESSION_KEY, JSON.stringify(email));
+  // Use the bridge so the main script's local currentUser variable gets set
+  if (typeof window._firebaseLogin === 'function') {
+    window._firebaseLogin(ud);
+  }
+});
+</script>
+
+</body>
+</html>
