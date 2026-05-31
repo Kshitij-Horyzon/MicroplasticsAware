@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Firebase — Sign Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;}
+html{scroll-behavior:smooth;}
+input,textarea,select{cursor:text;user-select:text;-webkit-user-select:text;}
+:root{
+  --a:#00c8ff;--adim:#005d75;--aglow:rgba(0,200,255,0.13);
+  --dark:#03090f;--card:#081525;--border:rgba(0,200,255,0.16);
+  --border2:rgba(0,200,255,0.38);--text:#b8d8e8;--muted:#4a7a9b;
+  --warn:#ff9f00;--danger:#ff4060;--ok:#00e5a0;--bg2:#050e1a;
+  --gold:#ffd700;--purple:#b44dff;
+}
+body{background:var(--dark);color:#d0eaf8;font-family:'Outfit',sans-serif;min-height:100vh;cursor:default;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.disp{font-family:'Bebas Neue',sans-serif;letter-spacing:.03em;}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--a);letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--border);padding:4px 12px;border-radius:2px;display:inline-block;margin-bottom:14px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:24px;transition:border-color .25s,box-shadow .25s;}
+.card:hover{border-color:var(--border2);}
+.card-glow:hover{box-shadow:0 0 28px var(--aglow);}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:10px 22px;border-radius:2px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:all .18s;border:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;user-select:none;width:100%;}
+.btn-a{background:var(--a);color:#03090f;}.btn-a:hover{opacity:.85;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}.btn-ghost:hover{border-color:var(--a);color:var(--a);}
+input,select,textarea{background:rgba(255,255,255,.04);border:1px solid var(--border);color:#d0eaf8;font-family:'Outfit',sans-serif;font-size:14px;padding:10px 14px;border-radius:2px;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--a);}
+label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.anim{animation:fadeUp .4s ease both;}
+.hero-bg{position:fixed;inset:0;opacity:.025;background-image:linear-gradient(var(--a) 1px,transparent 1px),linear-gradient(90deg,var(--a) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.hero-glow{position:fixed;top:0;left:0;right:0;height:50vh;background:radial-gradient(ellipse at 50% 0%,rgba(0,200,255,.12) 0%,transparent 65%);pointer-events:none;z-index:0;}
+nav{position:sticky;top:0;z-index:500;background:rgba(3,9,15,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;}
+.nav-inner{max-width:480px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--a);animation:pulse 2s infinite;flex-shrink:0;}
+.page{position:relative;z-index:1;min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 24px;}
+.auth-card{width:100%;max-width:420px;}
+.auth-header{text-align:center;margin-bottom:32px;}
+.auth-header .disp{font-size:42px;color:var(--a);line-height:1;}
+.auth-header p{font-size:13px;color:var(--muted);margin-top:6px;font-family:'IBM Plex Mono',monospace;}
+.fg{margin-bottom:14px;}
+.input-wrap{position:relative;}
+.input-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:13px;font-family:'IBM Plex Mono',monospace;}
+.input-wrap input{padding-left:36px;}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;}
+.divider span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.auth-tabs{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:28px;}
+.auth-tab{flex:1;padding:10px;background:transparent;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.auth-tab.active{background:var(--aglow);color:var(--a);}
+.msg{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:10px 14px;border-radius:2px;margin-bottom:14px;display:none;letter-spacing:.04em;}
+.msg.error{background:rgba(255,64,96,.1);border:1px solid var(--danger);color:var(--danger);}
+.msg.success{background:rgba(0,229,160,.1);border:1px solid var(--ok);color:var(--ok);}
+.btn.loading{pointer-events:none;opacity:.7;}
+.btn.loading .btn-text{opacity:0;}
+.btn.loading::after{content:'';position:absolute;width:16px;height:16px;border:2px solid rgba(3,9,15,.3);border-top-color:#03090f;border-radius:50%;animation:spin .7s linear infinite;}
+.auth-note{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:24px;letter-spacing:.05em;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="hero-bg"></div>
+<div class="hero-glow"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="pulse-dot"></div>
+      <span class="disp" style="font-size:18px;color:var(--a);letter-spacing:.08em;">FIREBASE AUTH</span>
+    </div>
+    <span class="mono" style="font-size:10px;color:var(--muted);letter-spacing:.08em;">SECURE · ENCRYPTED</span>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="auth-card anim">
+
+    <div class="auth-header">
+      <div class="tag">&#x25CF; Identity Portal</div>
+      <div class="disp" id="form-title">CREATE ACCOUNT</div>
+      <p id="form-sub">Join and get started in seconds</p>
+    </div>
+
+    <div class="card card-glow">
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+        <button class="auth-tab" id="tab-login" onclick="switchTab('login')">Sign In</button>
+      </div>
+
+      <div class="msg" id="auth-msg"></div>
+
+      <!-- SIGN UP FORM -->
+      <div id="form-signup">
+        <div class="fg">
+          <label>Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">@</span>
+            <input type="email" id="su-email" placeholder="you@example.com"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">#</span>
+            <input type="password" id="su-password" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')doSignup()"/>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:20px;">
+          <label>Confirm Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">#</span>
+            <input type="password" id="su-confirm" placeholder="Repeat password" onkeydown="if(event.key==='Enter')doSignup()"/>
+          </div>
+        </div>
+        <button class="btn btn-a" id="btn-signup" onclick="doSignup()" style="position:relative;">
+          <span class="btn-text">Create Account &rarr;</span>
+        </button>
+      </div>
+
+      <!-- SIGN IN FORM -->
+      <div id="form-login" style="display:none;">
+        <div class="fg">
+          <label>Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">@</span>
+            <input type="email" id="li-email" placeholder="you@example.com"/>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:20px;">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">#</span>
+            <input type="password" id="li-password" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"/>
+          </div>
+        </div>
+        <button class="btn btn-a" id="btn-login" onclick="doLogin()" style="position:relative;">
+          <span class="btn-text">Sign In &rarr;</span>
+        </button>
+        <div class="divider"><span>or</span></div>
+        <button class="btn btn-ghost" onclick="doReset()" style="position:relative;">
+          <span class="btn-text">Forgot Password</span>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="auth-note">
+      SECURED WITH FIREBASE AUTHENTICATION<br>
+      YOUR DATA IS ENCRYPTED IN TRANSIT AND AT REST
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyBldLO7-esm8VzBqMGgxTnBCIDyVwXlJfg",
+  authDomain:        "microplasticsaware.firebaseapp.com",
+  projectId:         "microplasticsaware",
+  storageBucket:     "microplasticsaware.firebasestorage.app",
+  messagingSenderId: "212570212231",
+  appId:             "1:212570212231:web:06bb5159dc29e074b53522"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Track if we initiated auth ourselves (to avoid redirect loop on page load)
+let authInProgress = false;
+
+// If user is already logged in when page loads, redirect immediately
+onAuthStateChanged(auth, user => {
+  if (user && authInProgress) {
+    window.location.href = 'Microplasticsmain.html';
+  }
+});
+
+function showMsg(text, type = 'error') {
+  const el = document.getElementById('auth-msg');
+  el.textContent = text;
+  el.className = 'msg ' + type;
+  el.style.display = 'block';
+}
+function hideMsg() { document.getElementById('auth-msg').style.display = 'none'; }
+
+function setLoading(btnId, on) {
+  document.getElementById(btnId).classList.toggle('loading', on);
+}
+
+function doRedirect() {
+  showMsg('Success! Redirecting…', 'success');
+  window.location.href = 'Microplasticsmain.html';
+}
+
+window.switchTab = function(tab) {
+  const s = tab === 'signup';
+  document.getElementById('form-signup').style.display = s ? '' : 'none';
+  document.getElementById('form-login').style.display  = s ? 'none' : '';
+  document.getElementById('tab-signup').classList.toggle('active', s);
+  document.getElementById('tab-login').classList.toggle('active', !s);
+  document.getElementById('form-title').textContent = s ? 'CREATE ACCOUNT' : 'WELCOME BACK';
+  document.getElementById('form-sub').textContent   = s ? 'Join and get started in seconds' : 'Sign in to your account';
+  hideMsg();
+};
+
+window.doSignup = async function() {
+  hideMsg();
+  const email    = document.getElementById('su-email').value.trim();
+  const password = document.getElementById('su-password').value;
+  const confirm  = document.getElementById('su-confirm').value;
+  if (!email || !password)   { showMsg('Please fill in all fields.'); return; }
+  if (password !== confirm)  { showMsg('Passwords do not match.'); return; }
+  if (password.length < 6)   { showMsg('Password must be at least 6 characters.'); return; }
+  setLoading('btn-signup', true);
+  try {
+    authInProgress = true;
+    await createUserWithEmailAndPassword(auth, email, password);
+    doRedirect();
+  } catch(e) {
+    authInProgress = false;
+    setLoading('btn-signup', false);
+    showMsg(e.message);
+  }
+};
+
+window.doLogin = async function() {
+  hideMsg();
+  const email    = document.getElementById('li-email').value.trim();
+  const password = document.getElementById('li-password').value;
+  if (!email || !password) { showMsg('Please enter your email and password.'); return; }
+  setLoading('btn-login', true);
+  try {
+    authInProgress = true;
+    await signInWithEmailAndPassword(auth, email, password);
+    doRedirect();
+  } catch(e) {
+    authInProgress = false;
+    setLoading('btn-login', false);
+    showMsg(e.message);
+  }
+};
+
+window.doReset = function() {
+  hideMsg();
+  const email = document.getElementById('li-email').value.trim();
+  if (!email) { showMsg('Enter your email above first.'); return; }
+  sendPasswordResetEmail(auth, email)
+    .then(() => showMsg('Reset email sent — check your inbox.', 'success'))
+    .catch(e => showMsg(e.message));
+};
+</script>
+
+</body>
+</html>
